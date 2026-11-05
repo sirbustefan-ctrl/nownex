@@ -1,76 +1,73 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NOWNEX</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<style>
-*{box-sizing:border-box}
-body{
- margin:0;background:radial-gradient(circle,#123c64,#061326);
- color:white;font-family:Arial,sans-serif;text-align:center;
- min-height:100vh;
-}
-header{padding:25px}
-.logo{font-size:32px;font-weight:bold;letter-spacing:4px}
-.logo span{color:#45d5ff}
-.tag{color:#9dc5e2;font-size:13px;margin-top:7px}
-h1{font-size:27px;margin:20px 10px 8px}
-p{color:#b4cce0}
-.scene{
- max-width:700px;margin:25px auto;padding:12px;
- border:1px solid #2584bd;border-radius:20px;
- background:#0a2039;box-shadow:0 0 35px #168bd855;
- overflow:hidden;
-}
-.scene img{
- display:block;width:100%;height:auto;
- border-radius:12px;
- animation:softMove 7s ease-in-out infinite alternate;
-}
-.status{
- display:inline-block;padding:12px 20px;
- border:1px solid #2584bd;border-radius:25px;
- background:#0c2944;color:#c9efff;font-size:13px;
-}
-.dot{
- display:inline-block;width:8px;height:8px;
- background:#42e6a4;border-radius:50%;margin-right:8px;
-}
-.note{font-size:11px;color:#829bb2;padding:20px;line-height:1.5}
-@keyframes softMove{
- from{transform:scale(1)}
- to{transform:scale(1.035)}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOWNEX</title>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #020817, #063b70, #020817);
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 25px 15px;
+    }
+
+    h1 {
+      font-size: 34px;
+      letter-spacing: 5px;
+      margin: 20px 0 5px;
+    }
+
+    .tagline {
+      color: #80caff;
+      margin-bottom: 25px;
+    }
+
+    video {
+      display: block;
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+      border-radius: 16px;
+      border: 2px solid #168cff;
+      background: #000;
+    }
+
+    .status {
+      margin-top: 20px;
+      color: #80caff;
+      font-size: 14px;
+    }
+  </style>
 </head>
+
 <body>
-<header>
- <div class="logo">NOW<span>NEX</span></div>
- <div class="tag">The Future Starts Now. 🌍</div>
-</header>
 
-<h1>Bine ai venit în NOWNEX!</h1>
-<p>Un nou început. O nouă experiență.</p>
+  <h1>NOWNEX</h1>
+  <div class="tagline">The Future Starts Now. 🌍</div>
 
-<div class="scene">
- <img src="AECC036E-5995-4424-8CB1-212BC61CDE59.png"
- alt="Scenă de business NOWNEX">
-</div>
+  <video autoplay muted loop playsinline controls>
+    <source src="2026-11-05%2011%3A50%3A39.mov" type="video/quicktime">
+    Browserul nu acceptă acest videoclip.
+  </video>
 
-<div class="status"><span class="dot"></span>NOWNEX</div>
+  <div class="status">🌍 NOWNEX — WORKING</div>
 
-<div class="note">
-Fotografia are un efect vizual subtil de mișcare.
-Nu reprezintă activitate economică sau câștiguri reale.
-</div>
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+  </script>
 
-<script>
-if(window.Telegram?.WebApp){
- Telegram.WebApp.ready();
- Telegram.WebApp.expand();
-}
-</script>
 </body>
 </html>
