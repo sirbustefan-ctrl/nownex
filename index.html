@@ -1,76 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NOWNEX</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 *{box-sizing:border-box}
 body{
  margin:0;
- background:#080d18;
- color:white;
  font-family:Arial,sans-serif;
+ color:#fff;
+ background:radial-gradient(circle at top,#153d65,#071326 70%);
+ min-height:100vh;
  text-align:center;
 }
-header{
- padding:35px 15px;
- background:linear-gradient(145deg,#101d35,#080d18);
+header{padding:22px 15px}
+.logo{font-size:30px;font-weight:900;letter-spacing:4px}
+.logo span{color:#48d5ff}
+.tagline{color:#a9c6dc;font-size:13px;margin-top:7px}
+h1{font-size:27px;margin:25px 15px 8px}
+.subtitle{color:#a9c6dc;font-size:14px;padding:0 20px}
+.scene{
+ height:330px;
+ max-width:500px;
+ margin:25px auto;
+ position:relative;
+ overflow:hidden;
+ border:1px solid #28618a;
+ border-radius:22px;
+ background:linear-gradient(#12375a,#08182b);
 }
-h1{
- font-size:38px;
- letter-spacing:5px;
- color:#42a5ff;
- margin:15px 0;
+.floor{
+ position:absolute;bottom:35px;left:8%;right:8%;
+ height:2px;background:#3984a8;
 }
-.subtitle{
- color:#c5d5e8;
- font-size:14px;
- letter-spacing:2px;
+.person{
+ position:absolute;bottom:38px;left:calc(50% - 105px);
+ width:150px;height:245px;
+ animation:breathe 3s ease-in-out infinite;
 }
-main{padding:30px 20px}
-.card{
- background:#111c2e;
- border:1px solid #243b5b;
- border-radius:18px;
- padding:25px 18px;
- margin:20px auto;
- max-width:420px;
+.head{
+ position:absolute;top:5px;left:47px;
+ width:58px;height:67px;border-radius:45%;
+ background:#dca17f;
 }
-h2{color:#42a5ff}
-button{
- background:#1689ed;
- color:white;
- border:0;
- border-radius:12px;
- padding:15px 35px;
- font-size:16px;
- font-weight:bold;
+.hair{
+ position:absolute;top:0;left:45px;
+ width:62px;height:28px;border-radius:50% 50% 20% 20%;
+ background:#17283c;z-index:2;
 }
-footer{
- color:#71839c;
- padding:30px;
- font-size:12px;
+.body{
+ position:absolute;top:75px;left:25px;
+ width:100px;height:105px;border-radius:25px 25px 12px 12px;
+ background:linear-gradient(120deg,#35c8ff,#1263a5);
+}
+.arm{
+ position:absolute;top:91px;width:20px;height:85px;
+ border-radius:15px;background:#dca17f;
+ transform-origin:top center;
+}
+.arm.left{left:22px;transform:rotate(35deg)}
+.arm.right{left:108px;transform:rotate(-48deg)}
+.leg{
+ position:absolute;top:170px;width:27px;height:70px;
+ border-radius:14px;background:#203b59;
+}
+.leg.left{left:43px}.leg.right{left:83px}
+.desk{
+ position:absolute;right:5%;bottom:95px;
+ width:48%;height:12px;border-radius:6px;
+ background:#789bb2;
+}
+.desk:after{
+ content:"";position:absolute;left:15px;right:15px;
+ top:12px;height:100px;background:#34516a;
+}
+.monitor{
+ position:absolute;right:15%;bottom:112px;
+ width:105px;height:78px;border:6px solid #263f59;
+ border-radius:8px;background:#07172b;
+ display:grid;place-items:center;
+ color:#55ddff;font-size:42px;font-weight:bold;
+}
+.keyboard{
+ position:absolute;right:20%;bottom:104px;
+ width:75px;height:6px;background:#b5d9e9;
+}
+.status{
+ display:inline-block;padding:10px 17px;
+ border:1px solid #26739b;border-radius:25px;
+ color:#bdeeff;background:#0c2944;font-size:13px;
+}
+.dot{
+ display:inline-block;width:8px;height:8px;
+ border-radius:50%;background:#42e6a4;margin-right:8px;
+}
+.notice{
+ max-width:440px;margin:20px auto;padding:0 20px;
+ color:#829db4;font-size:11px;line-height:1.5;
+}
+@keyframes breathe{
+ 0%,100%{transform:translateY(0)}
+ 50%{transform:translateY(-5px)}
 }
 </style>
 </head>
 <body>
 <header>
- <div class="subtitle">WELCOME TO</div>
- <h1>NOWNEX</h1>
- <div class="subtitle">THE FUTURE STARTS NOW 🌍</div>
+ <div class="logo">NOW<span>NEX</span></div>
+ <div class="tagline">The Future Starts Now. 🌍</div>
 </header>
 
-<main>
- <div class="card">
-  <h2>Your Next Chapter Starts Here</h2>
-  <p>Discover the NOWNEX platform.</p>
-  <button onclick="alert('Welcome to NOWNEX!')">
-   GET STARTED
-  </button>
- </div>
-</main>
+<h1>Bine ai venit în NOWNEX!</h1>
+<p class="subtitle">Viitorul începe acum.</p>
 
-<footer>NOWNEX © 2026</footer>
+<div class="scene">
+ <div class="person">
+  <div class="hair"></div>
+  <div class="head"></div>
+  <div class="body"></div>
+  <div class="arm left"></div>
+  <div class="arm right"></div>
+  <div class="leg left"></div>
+  <div class="leg right"></div>
+ </div>
+ <div class="monitor">N</div>
+ <div class="keyboard"></div>
+ <div class="desk"></div>
+ <div class="floor"></div>
+</div>
+
+<div class="status"><span class="dot"></span>Personaj demonstrativ activ</div>
+
+<p class="notice">
+Animația este decorativă și nu reprezintă muncă efectivă sau câștiguri.
+Soldurile și recompensele vor fi afișate numai pe baza operațiunilor reale și verificabile.
+</p>
+
+<script>
+if(window.Telegram && window.Telegram.WebApp){
+ Telegram.WebApp.ready();
+ Telegram.WebApp.expand();
+}
+</script>
 </body>
 </html>
