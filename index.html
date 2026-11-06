@@ -1,73 +1,108 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NOWNEX</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOWNEX</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+* { box-sizing: border-box; }
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 20px 12px 100px;
+  background: linear-gradient(135deg,#020817,#063b70,#020817);
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #020817, #063b70, #020817);
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 25px 15px;
-    }
+.logo {
+  font-size: 38px;
+  font-weight: bold;
+  letter-spacing: 6px;
+  margin: 25px 0;
+}
 
-    h1 {
-      font-size: 34px;
-      letter-spacing: 5px;
-      margin: 20px 0 5px;
-    }
+video {
+  width: 100%;
+  max-width: 640px;
+  border-radius: 16px;
+  border: 2px solid #168cff;
+  background: #000;
+}
 
-    .tagline {
-      color: #80caff;
-      margin-bottom: 25px;
-    }
+.bottom-menu {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  background: #04152c;
+  border-top: 1px solid #168cff;
+  padding: 12px 4px;
+}
 
-    video {
-      display: block;
-      width: 100%;
-      max-width: 640px;
-      margin: 0 auto;
-      border-radius: 16px;
-      border: 2px solid #168cff;
-      background: #000;
-    }
+.bottom-menu button {
+  background: none;
+  border: none;
+  color: #9ccfff;
+  font-size: 12px;
+  padding: 8px 4px;
+  cursor: pointer;
+}
 
-    .status {
-      margin-top: 20px;
-      color: #80caff;
-      font-size: 14px;
-    }
-  </style>
+.bottom-menu button span {
+  display: block;
+  font-size: 22px;
+  margin-bottom: 5px;
+}
+
+.bottom-menu button.active {
+  color: white;
+}
+</style>
 </head>
 
 <body>
 
-  <h1>NOWNEX</h1>
-  <div class="tagline">The Future Starts Now. 🌍</div>
+<div class="logo">NOWNEX</div>
 
-  <video autoplay muted loop playsinline controls>
-    <source src="2026-11-05%2011%3A50%3A39.mov" type="video/quicktime">
-    Browserul nu acceptă acest videoclip.
-  </video>
+<video autoplay muted loop playsinline controls>
+  <source src="2026-11-05%2011%3A50%3A39.mov" type="video/quicktime">
+</video>
 
-  <div class="status">🌍 NOWNEX — WORKING</div>
+<div class="bottom-menu">
+  <button class="active" data-tab="Packages">
+    <span>📦</span>Packages
+  </button>
+  <button data-tab="Balance">
+    <span>💰</span>Balance
+  </button>
+  <button data-tab="Statistics">
+    <span>📊</span>Statistics
+  </button>
+  <button data-tab="Profile">
+    <span>👤</span>Profile
+  </button>
+</div>
 
-  <script>
-    const tg = window.Telegram.WebApp;
-    tg.ready();
-    tg.expand();
-  </script>
+<script>
+const tg = window.Telegram.WebApp;
+tg.ready();
+tg.expand();
+
+document.querySelectorAll(".bottom-menu button").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".bottom-menu button")
+      .forEach(item => item.classList.remove("active"));
+    button.classList.add("active");
+  });
+});
+</script>
 
 </body>
 </html>
