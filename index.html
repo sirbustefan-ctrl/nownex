@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +19,7 @@
       font-family: Arial, sans-serif;
       text-align: center;
       overflow-x: hidden;
-      padding-bottom: 30px;
+      padding-bottom: 25px;
     }
 
     .logo {
@@ -43,7 +43,8 @@
     }
 
     .menu-circle {
-      width: min(94vw, 390px);
+      width: 340px;
+      max-width: 96vw;
       aspect-ratio: 1 / 1;
       margin: 20px auto;
       border: 2px solid #168bff;
@@ -55,7 +56,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 12px;
+      padding: 8px;
     }
 
     .menu-items {
@@ -78,6 +79,8 @@
       font-weight: bold;
       cursor: pointer;
       overflow-wrap: anywhere;
+      transition: background .25s ease, box-shadow .25s ease,
+                  border-color .25s ease, transform .2s ease;
     }
 
     .menu-item .icon {
@@ -91,12 +94,25 @@
       background: #0b315b;
       border: 1px solid #269cff;
       font-size: 20px;
+      transition: background .25s ease, box-shadow .25s ease;
     }
 
     .menu-item.active {
-      background: #075ca8;
-      border-color: #8acbff;
-      box-shadow: 0 0 15px #168bff;
+      background: #38aaff;
+      color: #ffffff;
+      border: 1px solid #b8e5ff;
+      box-shadow:
+        0 0 12px #38aaff,
+        0 0 25px #168bff,
+        inset 0 0 12px rgba(255,255,255,.35);
+    }
+
+    .menu-item.active .icon {
+      background: #8bd3ff;
+      border-color: #ffffff;
+      box-shadow:
+        0 0 12px #ffffff,
+        0 0 20px #38aaff;
     }
 
     .menu-item:active {
@@ -106,7 +122,7 @@
     @media (max-width: 360px) {
       .menu-circle {
         width: 96vw;
-        padding: 8px;
+        padding: 6px;
       }
 
       .menu-item {
