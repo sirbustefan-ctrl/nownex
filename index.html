@@ -7,7 +7,9 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -29,6 +31,7 @@
     }
 
     video {
+      pointer-events: none;
       display: block;
       width: 92%;
       max-width: 600px;
@@ -36,6 +39,7 @@
       border-radius: 18px;
       border: 1px solid #167dce;
       box-shadow: 0 0 25px rgba(0,130,255,.35);
+      object-fit: cover;
     }
 
     .menu-circle {
@@ -45,8 +49,9 @@
       border: 2px solid #168bff;
       border-radius: 50%;
       background: radial-gradient(circle, #102b50, #06152b 70%);
-      box-shadow: 0 0 18px rgba(0,132,255,.6),
-                  inset 0 0 25px rgba(0,132,255,.2);
+      box-shadow:
+        0 0 18px rgba(0,132,255,.6),
+        inset 0 0 25px rgba(0,132,255,.2);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -94,7 +99,9 @@
       box-shadow: 0 0 15px #168bff;
     }
 
-    .menu-item:active { transform: scale(.95); }
+    .menu-item:active {
+      transform: scale(.95);
+    }
 
     @media (max-width: 360px) {
       .menu-circle {
@@ -120,7 +127,9 @@
 
   <div class="logo">NOWNEX</div>
 
-  <video autoplay muted loop playsinline>
+  <video autoplay muted loop playsinline preload="auto"
+         disablepictureinpicture
+         oncontextmenu="return false">
     <source src="2026-11-05%2011%3A50%3A39.mov" type="video/quicktime">
   </video>
 
