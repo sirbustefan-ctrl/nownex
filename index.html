@@ -167,6 +167,66 @@
       font-size: 13px;
       line-height: 1.5;
     }
+
+    .avatar-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 8px 0 25px;
+    }
+
+    .avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 2px solid #34445d;
+      background: #080b12;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: pointer;
+      color: white;
+      font-size: 42px;
+      font-weight: 300;
+      padding: 0;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-help {
+      color: #8fa0b8;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+
+    .delete-avatar-btn {
+      margin-top: 12px;
+      padding: 10px 20px;
+      border: 1px solid #9b3d48;
+      border-radius: 10px;
+      background: transparent;
+      color: #ff8585;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .avatar-message {
+      color: #ff8585;
+      font-size: 13px;
+      text-align: center;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    #avatarInput {
+      display: none;
+    }
   </style>
 </head>
 
@@ -221,6 +281,12 @@
     <button data-page="profile">PROFILE</button>
   </nav>
 
+  <input
+    type="file"
+    id="avatarInput"
+    accept="image/jpeg,image/png,image/webp"
+  >
+
   <script>
     const SUPABASE_URL = "https://gmgcyyhhdtqhtpfqbydg.supabase.co";
     const FUNCTION_URL = SUPABASE_URL + "/functions/v1/rapid-function";
@@ -230,6 +296,7 @@
 
     let profile = null;
     let requestBusy = false;
+    let avatarBusy = false;
 
     if (tg) {
       tg.ready();
@@ -250,12 +317,15 @@
       $(id).textContent = text;
     }
 
-    async function callFunction(username) {
+    async function callFunction(username, extra = {}) {
       if (!tg?.initData) {
         throw new Error("Please open NOWNEX through Telegram.");
       }
 
-      const body = { initData: tg.initData };
+      const body = {
+        initData: tg.initData,
+        ...extra
+      };
 
       if (username) {
         body.username = username;
@@ -334,6 +404,54 @@
         title.textContent = "PROFILE";
         section.append(title);
 
+        const avatarArea = document.createElement("div");
+        avatarArea.className = "avatar-area";
+
+        const avatarButton = document.createElement("button");
+        avatarButton.type = "button";
+        avatarButton.className = "avatar";
+        avatarButton.setAttribute("aria-label", "Choose profile picture");
+
+        if (profile?.avatar_url) {
+          const image = document.createElement("img");
+          image.src = profile.avatar_url;
+          image.alt = "Profile picture";
+          avatarButton.append(image);
+        } else {
+          avatarButton.textContent = "+";
+        }
+
+        avatarButton.addEventListener("click", () => {
+          if (!avatarBusy) $("avatarInput").click();
+        });
+
+        avatarArea.append(avatarButton);
+
+        const help = document.createElement("div");
+        help.className = "avatar-help";
+        help.textContent = profile?.avatar_url
+          ? "Tap your photo to change it."
+          : "Tap + to add a profile picture.";
+
+        avatarArea.append(help);
+
+        if (profile?.avatar_url) {
+          const deleteButton = document.createElement("button");
+          deleteButton.type = "button";
+          deleteButton.className = "delete-avatar-btn";
+          deleteButton.textContent = "DELETE PHOTO";
+
+          deleteButton.addEventListener("click", deleteAvatar);
+          avatarArea.append(deleteButton);
+        }
+
+        const avatarMessage = document.createElement("div");
+        avatarMessage.id = "avatarMessage";
+        avatarMessage.className = "avatar-message";
+        avatarArea.append(avatarMessage);
+
+        section.append(avatarArea);
+
         addProfileRow(section, "NOWNEX ID", profile?.nownex_id);
         addProfileRow(section, "USERNAME", profile?.username);
 
@@ -363,6 +481,147 @@
 
       row.append(labelElement, valueElement);
       parent.append(row);
+    }
+
+    function compressImage(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          const image = new Image();
+
+          image.onload = () => {
+            const canvas = document.createElement("canvas");
+            const maxDimension = 1200;
+
+            let width = image.width;
+            let height = image.height;
+
+            if (width > maxDimension || height > maxDimension) {
+              const scale = Math.min(
+                maxDimension / width,
+                maxDimension / height
+              );
+
+              width = Math.round(width * scale);
+              height = Math.round(height * scale);
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+
+            const context = canvas.getContext("2d");
+
+            if (!context) {
+              reject(new Error("Could not process this image."));
+              return;
+            }
+
+            context.drawImage(image, 0, 0, width, height);
+
+            let quality = 0.85;
+            let dataUrl = canvas.toDataURL("image/jpeg", quality);
+
+            while (
+              dataUrl.length * 0.75 > 1900000 &&
+              quality > 0.3
+            ) {
+              quality -= 0.1;
+              dataUrl = canvas.toDataURL("image/jpeg", quality);
+            }
+
+            if (dataUrl.length * 0.75 > 2000000) {
+              reject(new Error("Image is too large. Choose another photo."));
+              return;
+            }
+
+            resolve(dataUrl);
+          };
+
+          image.onerror = () => {
+            reject(new Error("Could not open this image."));
+          };
+
+          image.src = reader.result;
+        };
+
+        reader.onerror = () => {
+          reject(new Error("Could not read this image."));
+        };
+
+        reader.readAsDataURL(file);
+      });
+    }
+
+    $("avatarInput").addEventListener("change", async event => {
+      const file = event.target.files?.[0];
+
+      if (!file) return;
+
+      if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+        showAvatarMessage("Please choose a JPG, PNG or WEBP image.");
+        event.target.value = "";
+        return;
+      }
+
+      if (avatarBusy) return;
+
+      avatarBusy = true;
+      showAvatarMessage("Preparing your photo...");
+
+      try {
+        const imageBase64 = await compressImage(file);
+
+        showAvatarMessage("Uploading your photo...");
+
+        const result = await callFunction(null, {
+          action: "upload_avatar",
+          imageBase64,
+          mimeType: "image/jpeg"
+        });
+
+        profile.avatar_url = result.avatar_url;
+        openPage("profile");
+
+      } catch (error) {
+        showAvatarMessage(error.message);
+      } finally {
+        avatarBusy = false;
+        event.target.value = "";
+      }
+    });
+
+    async function deleteAvatar() {
+      if (avatarBusy || !profile?.avatar_url) return;
+
+      const confirmed = confirm("Delete your profile picture?");
+
+      if (!confirmed) return;
+
+      avatarBusy = true;
+      showAvatarMessage("Deleting photo...");
+
+      try {
+        await callFunction(null, {
+          action: "delete_avatar"
+        });
+
+        profile.avatar_url = null;
+        openPage("profile");
+
+      } catch (error) {
+        showAvatarMessage(error.message);
+      } finally {
+        avatarBusy = false;
+      }
+    }
+
+    function showAvatarMessage(text) {
+      const message = $("avatarMessage");
+
+      if (message) {
+        message.textContent = text;
+      }
     }
 
     document.querySelectorAll(".menu button").forEach(button => {
