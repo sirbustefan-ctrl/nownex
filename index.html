@@ -1,195 +1,379 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>NOWNEX</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#05070d;color:white;font-family:Arial,sans-serif}
-.screen{display:none;min-height:100vh;padding:30px 20px 110px}
-.screen.active{display:flex}
-#intro{position:relative;display:flex;align-items:center;justify-content:center;padding:0;overflow:hidden}
-.video{position:absolute;width:100%;height:100%;object-fit:cover}
-.overlay{position:absolute;inset:0;background:#05070d55}
-.logo{position:absolute;top:35px;z-index:2;font-size:30px;font-weight:900;letter-spacing:7px;text-shadow:0 0 20px #168cff}
-.loader{position:absolute;bottom:45px;z-index:2;color:#fff;font-size:12px;letter-spacing:4px}
-.form{flex-direction:column;justify-content:center;align-items:center;text-align:center}
-h1{letter-spacing:6px}
-.subtitle{color:#9ba8bb;margin-bottom:30px}
-.input{width:100%;max-width:360px;padding:16px;margin:8px 0;color:white;background:#111a29;border:1px solid #263b56;border-radius:14px;font-size:16px}
-.primary{width:100%;max-width:360px;padding:16px;margin-top:16px;border:0;border-radius:15px;background:#0878d9;color:white;font-weight:bold}
-.message{color:#ff7777;min-height:24px;margin-top:14px}
-#home{flex-direction:column;align-items:center;padding-top:55px;text-align:center}
-.home-logo{font-size:30px;font-weight:900;letter-spacing:7px;text-shadow:0 0 20px #168cff;margin-bottom:45px}
-.welcome-text{color:#a9b8ca}
-.user-id{color:#4aa8ff;margin-top:8px;font-size:14px}
-.content-area{width:100%;max-width:500px;margin-top:35px}
-.content-area p{color:#a9b8ca}
-.bottom-menu{display:none;position:fixed;z-index:10;left:12px;right:12px;bottom:14px;padding:9px 7px;background:rgba(12,22,38,.96);border:1px solid #24466b;border-radius:28px;box-shadow:0 0 24px #0878d944;justify-content:space-around;gap:4px;backdrop-filter:blur(15px)}
-.bottom-menu.visible{display:flex}
-.menu-button{flex:1;min-width:0;padding:13px 2px;border:0;border-radius:22px;background:transparent;color:#91a6bd;font-size:11px;font-weight:bold}
-.menu-button.active{color:white;background:#0878d9;box-shadow:0 0 15px #0878d988}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOWNEX</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #080b12;
+      color: white;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+    }
+    button, input { font: inherit; }
+    .screen {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    #splash { padding: 0; background: #000; }
+    #splash video {
+      width: 100%;
+      height: 100vh;
+      object-fit: cover;
+    }
+    .hidden { display: none !important; }
+    .logo {
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: 5px;
+      margin-bottom: 30px;
+    }
+    .panel {
+      width: 100%;
+      max-width: 420px;
+      background: #111827;
+      border: 1px solid #263247;
+      border-radius: 20px;
+      padding: 25px;
+    }
+    h2 { margin-top: 0; }
+    input {
+      width: 100%;
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid #34445d;
+      background: #080b12;
+      color: white;
+      margin: 12px 0;
+      outline: none;
+    }
+    .main-btn {
+      width: 100%;
+      padding: 15px;
+      border: 0;
+      border-radius: 12px;
+      background: white;
+      color: #080b12;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .message {
+      color: #ff8585;
+      font-size: 14px;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+    #app {
+      min-height: 100vh;
+      padding: 35px 18px 110px;
+      max-width: 700px;
+      margin: auto;
+    }
+    .top-logo {
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      margin-bottom: 35px;
+    }
+    .section {
+      background: #111827;
+      border: 1px solid #263247;
+      border-radius: 18px;
+      padding: 22px;
+      min-height: 180px;
+    }
+    .row {
+      padding: 13px 0;
+      border-bottom: 1px solid #293449;
+      overflow-wrap: anywhere;
+    }
+    .row:last-child { border-bottom: 0; }
+    .label {
+      color: #8fa0b8;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+    .value { font-size: 16px; }
+    .menu {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 24px);
+      max-width: 600px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 3px;
+      padding: 9px 5px;
+      border-radius: 22px;
+      background: #182235;
+      border: 1px solid #34445d;
+      z-index: 10;
+    }
+    .menu button {
+      flex: 1;
+      min-width: 0;
+      padding: 12px 2px;
+      border: 0;
+      border-radius: 14px;
+      background: transparent;
+      color: #aab6c8;
+      font-size: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .menu button.active {
+      background: white;
+      color: #080b12;
+    }
+    .small-note {
+      color: #8fa0b8;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+  </style>
 </head>
-
 <body>
 
-<section id="intro" class="screen active">
-  <div class="logo">NOWNEX</div>
-  <video class="video" autoplay muted loop playsinline>
-    <source src="2026-11-05%2011%3A50%3A39.mov" type="video/quicktime">
-  </video>
-  <div class="overlay"></div>
-  <div class="loader">NOWNEX</div>
-</section>
-
-<section id="register" class="screen form">
-  <h1>NOWNEX</h1>
-  <p class="subtitle">Create your account</p>
-  <input id="username" class="input" type="text" maxlength="20"
-    placeholder="Choose your username" autocomplete="username">
-  <button class="primary" id="registerButton">REGISTER</button>
-  <div class="message" id="registerMessage"></div>
-</section>
-
-<section id="home" class="screen">
-  <div class="home-logo">NOWNEX</div>
-  <div class="welcome-text">Welcome to NOWNEX</div>
-  <div id="displayUsername"></div>
-  <div class="user-id" id="displayId"></div>
-
-  <div class="content-area" id="homeContent">
-    <h2>HOME</h2>
-    <p>Welcome to your NOWNEX account.</p>
+  <div id="splash" class="screen">
+    <video id="introVideo" autoplay muted playsinline loop>
+      <source src="2026-11-05%2011%3A50%3A39.mov" type="video/quicktime">
+    </video>
   </div>
-</section>
 
-<nav class="bottom-menu" id="bottomMenu">
-  <button class="menu-button" data-page="packages">PACKAGES</button>
-  <button class="menu-button" data-page="balance">BALANCE</button>
-  <button class="menu-button" data-page="statistics">STATISTICS</button>
-  <button class="menu-button" data-page="profile">PROFILE</button>
-</nav>
+  <div id="register" class="screen hidden">
+    <div class="logo">NOWNEX</div>
+    <div class="panel">
+      <h2>CREATE ACCOUNT</h2>
+      <p class="small-note">Alege username-ul tău NOWNEX.</p>
+      <form id="registerForm">
+        <input id="usernameInput" type="text"
+          placeholder="Username" minlength="3" maxlength="20"
+          autocomplete="username" required>
+        <button class="main-btn" type="submit">REGISTER</button>
+      </form>
+      <div id="registerMessage" class="message"></div>
+    </div>
+  </div>
+
+  <div id="loading" class="screen hidden">
+    <div class="logo">NOWNEX</div>
+    <p id="loadingMessage">Se încarcă...</p>
+  </div>
+
+  <main id="app" class="hidden">
+    <div class="top-logo">NOWNEX</div>
+    <div id="content"></div>
+  </main>
+
+  <nav id="menu" class="menu hidden">
+    <button data-page="packages">PACKAGES</button>
+    <button data-page="balance">BALANCE</button>
+    <button data-page="home" class="active">HOME</button>
+    <button data-page="statistics">STATISTICS</button>
+    <button data-page="profile">PROFILE</button>
+  </nav>
 
 <script>
 const SUPABASE_URL = "https://gmgcyyhhdtqhtpfqbydg.supabase.co";
 const FUNCTION_URL = SUPABASE_URL + "/functions/v1/rapid-function";
-const PUBLISHABLE_KEY = "INTRODU_AICI_PUBLISHABLE_KEY";
+const PUBLISHABLE_KEY = "sb_publishable_CmYdFutjywR_FOG51tWr5Q_VMcI5Huj";
 
 const tg = window.Telegram?.WebApp;
+let profile = null;
+let currentPage = "home";
+let requestBusy = false;
 
 if (tg) {
   tg.ready();
   tg.expand();
 }
 
-function showScreen(id) {
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+const $ = id => document.getElementById(id);
+
+function show(id) {
+  ["splash", "register", "loading", "app"].forEach(name => {
+    $(name).classList.toggle("hidden", name !== id);
+  });
+  $("menu").classList.toggle("hidden", id !== "app");
 }
 
-async function callRegistration(username) {
-  if (!tg || !tg.initData) {
-    throw new Error("Please open NOWNEX from Telegram.");
+function showMessage(id, text) {
+  $(id).textContent = text;
+}
+
+async function callFunction(username) {
+  if (!tg?.initData) {
+    throw new Error("Deschide aplicația prin Telegram pentru a continua.");
   }
+
+  const body = { initData: tg.initData };
+  if (username) body.username = username;
 
   const response = await fetch(FUNCTION_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "apikey": PUBLISHABLE_KEY
+      "apikey": PUBLISHABLE_KEY,
+      "Authorization": "Bearer " + PUBLISHABLE_KEY
     },
-    body: JSON.stringify({
-      initData: tg.initData,
-      ...(username ? { username } : {})
-    })
+    body: JSON.stringify(body)
   });
 
-  const result = await response.json();
+  const result = await response.json().catch(() => ({}));
 
-  if (!response.ok) {
-    throw new Error(result.error || "Registration failed.");
+  if (!response.ok || result.error) {
+    throw new Error(result.error || result.message || "A apărut o eroare.");
   }
 
   return result;
 }
 
-function enterHome(user) {
-  document.getElementById("displayUsername").textContent = "@" + user.username;
-  document.getElementById("displayId").textContent = user.nownex_id;
-  document.getElementById("bottomMenu").classList.add("visible");
-  showScreen("home");
+function enterApp(data) {
+  profile = data;
+  show("app");
+  openPage("home");
 }
 
-async function startApp() {
-  const introDuration = new Promise(resolve => setTimeout(resolve, 4500));
+function openPage(page) {
+  currentPage = page;
 
-  try {
-    const [result] = await Promise.all([
-      callRegistration(""),
-      introDuration
-    ]);
+  document.querySelectorAll(".menu button").forEach(button => {
+    button.classList.toggle("active", button.dataset.page === page);
+  });
 
-    if (result.registered) {
-      enterHome(result);
-    } else {
-      showScreen("register");
-    }
-  } catch (error) {
-    await introDuration;
-    showScreen("register");
-    document.getElementById("registerMessage").textContent = error.message;
+  const content = $("content");
+  content.replaceChildren();
+
+  const section = document.createElement("section");
+  section.className = "section";
+
+  const title = document.createElement("h2");
+  const description = document.createElement("p");
+  description.className = "small-note";
+
+  if (page === "home") {
+    title.textContent = "HOME";
+    description.textContent = "Bine ai venit în NOWNEX!";
+    section.append(title, description);
   }
+
+  if (page === "packages") {
+    title.textContent = "PACKAGES";
+    description.textContent = "Pachetele vor fi disponibile aici.";
+    section.append(title, description);
+  }
+
+  if (page === "balance") {
+    title.textContent = "BALANCE";
+    description.textContent = "Informațiile despre balanță vor apărea aici.";
+    section.append(title, description);
+  }
+
+  if (page === "statistics") {
+    title.textContent = "STATISTICS";
+    description.textContent = "Statisticile vor apărea aici.";
+    section.append(title, description);
+  }
+
+  if (page === "profile") {
+    title.textContent = "PROFILE";
+    section.append(title);
+
+    addProfileRow(section, "NOWNEX ID", profile?.nownex_id);
+    addProfileRow(section, "USERNAME", profile?.username);
+
+    const date = profile?.created_at
+      ? new Date(profile.created_at).toLocaleDateString("ro-RO")
+      : "Indisponibil";
+
+    addProfileRow(section, "DATA ÎNREGISTRĂRII", date);
+    addProfileRow(section, "TELEGRAM ID", profile?.telegram_id);
+  }
+
+  content.append(section);
 }
 
-document.getElementById("registerButton").addEventListener("click", async () => {
-  const input = document.getElementById("username");
-  const message = document.getElementById("registerMessage");
-  const button = document.getElementById("registerButton");
-  const username = input.value.trim();
+function addProfileRow(parent, label, value) {
+  const row = document.createElement("div");
+  row.className = "row";
+
+  const labelElement = document.createElement("div");
+  labelElement.className = "label";
+  labelElement.textContent = label;
+
+  const valueElement = document.createElement("div");
+  valueElement.className = "value";
+  valueElement.textContent = value == null ? "Indisponibil" : String(value);
+
+  row.append(labelElement, valueElement);
+  parent.append(row);
+}
+
+document.querySelectorAll(".menu button").forEach(button => {
+  button.addEventListener("click", () => openPage(button.dataset.page));
+});
+
+$("registerForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  if (requestBusy) return;
+
+  const username = $("usernameInput").value.trim();
 
   if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
-    message.textContent = "Use 3–20 letters, numbers or underscores.";
+    showMessage("registerMessage", "Folosește 3–20 caractere: litere, cifre sau _.");
     return;
   }
 
-  button.disabled = true;
-  button.textContent = "PLEASE WAIT...";
-  message.textContent = "";
+  requestBusy = true;
+  showMessage("registerMessage", "Se creează contul...");
 
   try {
-    const result = await callRegistration(username);
-    if (result.registered) {
-      enterHome(result);
+    const data = await callFunction(username);
+
+    if (!data.registered) {
+      throw new Error("Înregistrarea nu a fost confirmată.");
     }
+
+    enterApp(data);
   } catch (error) {
-    message.textContent = error.message;
+    showMessage("registerMessage", error.message);
   } finally {
-    button.disabled = false;
-    button.textContent = "REGISTER";
+    requestBusy = false;
   }
 });
 
-const pages = {
-  packages: ["PACKAGES", "Packages will be available here."],
-  balance: ["BALANCE", "Your balance will appear here."],
-  statistics: ["STATISTICS", "Your statistics will appear here."],
-  profile: ["PROFILE", "Your profile information will appear here."]
-};
+async function startApp() {
+  show("splash");
 
-document.querySelectorAll(".menu-button").forEach(button => {
-  button.addEventListener("click", () => {
-    const page = button.dataset.page;
-    document.querySelectorAll(".menu-button").forEach(b => b.classList.remove("active"));
-    button.classList.add("active");
+  const minimumSplash = new Promise(resolve => setTimeout(resolve, 3000));
 
-    document.getElementById("homeContent").innerHTML =
-      "<h2>" + pages[page][0] + "</h2><p>" + pages[page][1] + "</p>";
-  });
-});
+  try {
+    const [data] = await Promise.all([
+      callFunction(),
+      minimumSplash
+    ]);
+
+    if (data.registered) {
+      enterApp(data);
+    } else {
+      show("register");
+    }
+  } catch (error) {
+    await minimumSplash;
+    show("loading");
+    $("loadingMessage").textContent = error.message;
+  }
+}
 
 startApp();
 </script>
