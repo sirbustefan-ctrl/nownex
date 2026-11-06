@@ -1,399 +1,197 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>NOWNEX</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>NOWNEX</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: #05070d;
-      color: white;
-      font-family: Arial, sans-serif;
-      overflow-x: hidden;
-    }
-
-    button, input { font: inherit; }
-
-    .screen {
-      display: none;
-      min-height: 100vh;
-      padding: 24px 20px 110px;
-    }
-
-    .screen.active { display: flex; }
-
-    #welcome {
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-      position: relative;
-      min-height: 100vh;
-    }
-
-    .logo {
-      position: absolute;
-      z-index: 2;
-      top: 35px;
-      font-size: 30px;
-      font-weight: 900;
-      letter-spacing: 7px;
-      text-shadow: 0 0 20px #168cff;
-    }
-
-    .intro-video {
-      width: 100%;
-      height: 100vh;
-      object-fit: cover;
-      position: absolute;
-      inset: 0;
-    }
-
-    .video-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, #05070d55, #05070d22, #05070d);
-    }
-
-    .welcome-button {
-      position: absolute;
-      z-index: 3;
-      bottom: 55px;
-      border: 1px solid #329cff;
-      background: #0878d9;
-      color: white;
-      padding: 15px 42px;
-      border-radius: 30px;
-      font-weight: bold;
-      box-shadow: 0 0 25px #0878d9aa;
-    }
-
-    .form-screen {
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-
-    .form-screen h1 {
-      letter-spacing: 5px;
-      margin-bottom: 10px;
-    }
-
-    .subtitle {
-      color: #9ba8bb;
-      margin-bottom: 30px;
-    }
-
-    .input {
-      width: 100%;
-      max-width: 360px;
-      padding: 16px;
-      margin: 8px 0;
-      color: white;
-      background: #111a29;
-      border: 1px solid #263b56;
-      border-radius: 14px;
-      outline: none;
-    }
-
-    .primary {
-      width: 100%;
-      max-width: 360px;
-      padding: 16px;
-      margin-top: 16px;
-      border: 0;
-      border-radius: 15px;
-      background: #0878d9;
-      color: white;
-      font-weight: bold;
-    }
-
-    .message {
-      color: #ff7777;
-      min-height: 22px;
-      margin-top: 14px;
-      max-width: 360px;
-    }
-
-    #home {
-      flex-direction: column;
-      align-items: center;
-      padding-top: 55px;
-    }
-
-    .home-logo {
-      font-size: 30px;
-      font-weight: 900;
-      letter-spacing: 7px;
-      text-shadow: 0 0 20px #168cff;
-      margin-bottom: 45px;
-    }
-
-    .welcome-text {
-      color: #a9b8ca;
-      margin-bottom: 10px;
-    }
-
-    .user-id {
-      color: #4aa8ff;
-      margin-top: 8px;
-      font-size: 14px;
-    }
-
-    .content-area {
-      width: 100%;
-      max-width: 500px;
-      margin-top: 35px;
-      text-align: center;
-    }
-
-    .content-area h2 { letter-spacing: 2px; }
-
-    .content-area p { color: #a9b8ca; }
-
-    .bottom-menu {
-      display: none;
-      position: fixed;
-      z-index: 10;
-      left: 12px;
-      right: 12px;
-      bottom: 14px;
-      padding: 9px 7px;
-      background: rgba(12, 22, 38, .96);
-      border: 1px solid #24466b;
-      border-radius: 28px;
-      box-shadow: 0 0 24px #0878d944;
-      justify-content: space-around;
-      gap: 4px;
-      backdrop-filter: blur(15px);
-    }
-
-    .bottom-menu.visible { display: flex; }
-
-    .menu-button {
-      flex: 1;
-      min-width: 0;
-      padding: 12px 2px;
-      border: 0;
-      border-radius: 22px;
-      background: transparent;
-      color: #91a6bd;
-      font-size: 11px;
-      font-weight: bold;
-    }
-
-    .menu-button.active {
-      color: white;
-      background: #0878d9;
-      box-shadow: 0 0 15px #0878d988;
-    }
-
-    .hidden { display: none !important; }
-  </style>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#05070d;color:white;font-family:Arial,sans-serif}
+.screen{display:none;min-height:100vh;padding:30px 20px 110px}
+.screen.active{display:flex}
+#intro{position:relative;display:flex;align-items:center;justify-content:center;padding:0;overflow:hidden}
+.video{position:absolute;width:100%;height:100%;object-fit:cover}
+.overlay{position:absolute;inset:0;background:#05070d55}
+.logo{position:absolute;top:35px;z-index:2;font-size:30px;font-weight:900;letter-spacing:7px;text-shadow:0 0 20px #168cff}
+.loader{position:absolute;bottom:45px;z-index:2;color:#fff;font-size:12px;letter-spacing:4px}
+.form{flex-direction:column;justify-content:center;align-items:center;text-align:center}
+h1{letter-spacing:6px}
+.subtitle{color:#9ba8bb;margin-bottom:30px}
+.input{width:100%;max-width:360px;padding:16px;margin:8px 0;color:white;background:#111a29;border:1px solid #263b56;border-radius:14px;font-size:16px}
+.primary{width:100%;max-width:360px;padding:16px;margin-top:16px;border:0;border-radius:15px;background:#0878d9;color:white;font-weight:bold}
+.message{color:#ff7777;min-height:24px;margin-top:14px}
+#home{flex-direction:column;align-items:center;padding-top:55px;text-align:center}
+.home-logo{font-size:30px;font-weight:900;letter-spacing:7px;text-shadow:0 0 20px #168cff;margin-bottom:45px}
+.welcome-text{color:#a9b8ca}
+.user-id{color:#4aa8ff;margin-top:8px;font-size:14px}
+.content-area{width:100%;max-width:500px;margin-top:35px}
+.content-area p{color:#a9b8ca}
+.bottom-menu{display:none;position:fixed;z-index:10;left:12px;right:12px;bottom:14px;padding:9px 7px;background:rgba(12,22,38,.96);border:1px solid #24466b;border-radius:28px;box-shadow:0 0 24px #0878d944;justify-content:space-around;gap:4px;backdrop-filter:blur(15px)}
+.bottom-menu.visible{display:flex}
+.menu-button{flex:1;min-width:0;padding:13px 2px;border:0;border-radius:22px;background:transparent;color:#91a6bd;font-size:11px;font-weight:bold}
+.menu-button.active{color:white;background:#0878d9;box-shadow:0 0 15px #0878d988}
+</style>
 </head>
 
 <body>
 
-  <section id="welcome" class="screen active">
-    <div class="logo">NOWNEX</div>
-    <video class="intro-video"
-      autoplay muted loop playsinline
-      disablepictureinpicture
-      controlslist="nodownload noplaybackrate">
-      <source src="2026-11-05%2011%3A50%3A39.mov" type="video/quicktime">
-    </video>
-    <div class="video-overlay"></div>
-    <button class="welcome-button" id="startButton">ENTER</button>
-  </section>
+<section id="intro" class="screen active">
+  <div class="logo">NOWNEX</div>
+  <video class="video" autoplay muted loop playsinline>
+    <source src="2026-11-05%2011%3A50%3A39.mov" type="video/quicktime">
+  </video>
+  <div class="overlay"></div>
+  <div class="loader">NOWNEX</div>
+</section>
 
-  <section id="register" class="screen form-screen">
-    <h1>NOWNEX</h1>
-    <p class="subtitle">Create your account</p>
+<section id="register" class="screen form">
+  <h1>NOWNEX</h1>
+  <p class="subtitle">Create your account</p>
+  <input id="username" class="input" type="text" maxlength="20"
+    placeholder="Choose your username" autocomplete="username">
+  <button class="primary" id="registerButton">REGISTER</button>
+  <div class="message" id="registerMessage"></div>
+</section>
 
-    <input
-      id="username"
-      class="input"
-      type="text"
-      maxlength="20"
-      minlength="3"
-      placeholder="Choose your username"
-      autocomplete="username">
+<section id="home" class="screen">
+  <div class="home-logo">NOWNEX</div>
+  <div class="welcome-text">Welcome to NOWNEX</div>
+  <div id="displayUsername"></div>
+  <div class="user-id" id="displayId"></div>
 
-    <button class="primary" id="registerButton">REGISTER</button>
-    <div class="message" id="registerMessage"></div>
-  </section>
+  <div class="content-area" id="homeContent">
+    <h2>HOME</h2>
+    <p>Welcome to your NOWNEX account.</p>
+  </div>
+</section>
 
-  <section id="home" class="screen">
-    <div class="home-logo">NOWNEX</div>
-    <div class="welcome-text">Welcome to NOWNEX</div>
-    <div id="displayUsername"></div>
-    <div class="user-id" id="displayId"></div>
+<nav class="bottom-menu" id="bottomMenu">
+  <button class="menu-button" data-page="packages">PACKAGES</button>
+  <button class="menu-button" data-page="balance">BALANCE</button>
+  <button class="menu-button" data-page="statistics">STATISTICS</button>
+  <button class="menu-button" data-page="profile">PROFILE</button>
+</nav>
 
-    <div class="content-area" id="homeContent">
-      <h2>HOME</h2>
-      <p>Welcome to your NOWNEX account.</p>
-    </div>
-  </section>
+<script>
+const SUPABASE_URL = "https://gmgcyyhhdtqhtpfqbydg.supabase.co";
+const FUNCTION_URL = SUPABASE_URL + "/functions/v1/rapid-function";
+const PUBLISHABLE_KEY = "INTRODU_AICI_PUBLISHABLE_KEY";
 
-  <nav class="bottom-menu" id="bottomMenu">
-    <button class="menu-button active" data-page="home">HOME</button>
-    <button class="menu-button" data-page="packages">PACKAGES</button>
-    <button class="menu-button" data-page="balance">BALANCE</button>
-    <button class="menu-button" data-page="statistics">STATISTICS</button>
-    <button class="menu-button" data-page="profile">PROFILE</button>
-  </nav>
+const tg = window.Telegram?.WebApp;
 
-  <script>
-    const SUPABASE_URL = "https://gmgcyyhhdtqhtpfqbydg.supabase.co";
-    const FUNCTION_URL = SUPABASE_URL + "/functions/v1/rapid-function";
-    const PUBLISHABLE_KEY = "sb_publishable_CmYdFutjywR_FOG51tWr5Q_VMcI5Huj";
+if (tg) {
+  tg.ready();
+  tg.expand();
+}
 
-    const tg = window.Telegram?.WebApp;
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
 
-    if (tg) {
-      tg.ready();
-      tg.expand();
+async function callRegistration(username) {
+  if (!tg || !tg.initData) {
+    throw new Error("Please open NOWNEX from Telegram.");
+  }
+
+  const response = await fetch(FUNCTION_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "apikey": PUBLISHABLE_KEY
+    },
+    body: JSON.stringify({
+      initData: tg.initData,
+      ...(username ? { username } : {})
+    })
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.error || "Registration failed.");
+  }
+
+  return result;
+}
+
+function enterHome(user) {
+  document.getElementById("displayUsername").textContent = "@" + user.username;
+  document.getElementById("displayId").textContent = user.nownex_id;
+  document.getElementById("bottomMenu").classList.add("visible");
+  showScreen("home");
+}
+
+async function startApp() {
+  const introDuration = new Promise(resolve => setTimeout(resolve, 4500));
+
+  try {
+    const [result] = await Promise.all([
+      callRegistration(""),
+      introDuration
+    ]);
+
+    if (result.registered) {
+      enterHome(result);
+    } else {
+      showScreen("register");
     }
+  } catch (error) {
+    await introDuration;
+    showScreen("register");
+    document.getElementById("registerMessage").textContent = error.message;
+  }
+}
 
-    let currentUser = null;
+document.getElementById("registerButton").addEventListener("click", async () => {
+  const input = document.getElementById("username");
+  const message = document.getElementById("registerMessage");
+  const button = document.getElementById("registerButton");
+  const username = input.value.trim();
 
-    function showScreen(id) {
-      document.querySelectorAll(".screen").forEach(screen => {
-        screen.classList.remove("active");
-      });
+  if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+    message.textContent = "Use 3–20 letters, numbers or underscores.";
+    return;
+  }
 
-      document.getElementById(id).classList.add("active");
+  button.disabled = true;
+  button.textContent = "PLEASE WAIT...";
+  message.textContent = "";
+
+  try {
+    const result = await callRegistration(username);
+    if (result.registered) {
+      enterHome(result);
     }
+  } catch (error) {
+    message.textContent = error.message;
+  } finally {
+    button.disabled = false;
+    button.textContent = "REGISTER";
+  }
+});
 
-    async function callRegistration(username) {
-      if (!tg || !tg.initData) {
-        throw new Error("Open NOWNEX from its Telegram bot.");
-      }
+const pages = {
+  packages: ["PACKAGES", "Packages will be available here."],
+  balance: ["BALANCE", "Your balance will appear here."],
+  statistics: ["STATISTICS", "Your statistics will appear here."],
+  profile: ["PROFILE", "Your profile information will appear here."]
+};
 
-      const response = await fetch(FUNCTION_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "apikey": PUBLISHABLE_KEY
-        },
-        body: JSON.stringify({
-          initData: tg.initData,
-          ...(username ? { username } : {})
-        })
-      });
+document.querySelectorAll(".menu-button").forEach(button => {
+  button.addEventListener("click", () => {
+    const page = button.dataset.page;
+    document.querySelectorAll(".menu-button").forEach(b => b.classList.remove("active"));
+    button.classList.add("active");
 
-      const result = await response.json();
+    document.getElementById("homeContent").innerHTML =
+      "<h2>" + pages[page][0] + "</h2><p>" + pages[page][1] + "</p>";
+  });
+});
 
-      if (!response.ok) {
-        throw new Error(result.error || "Something went wrong.");
-      }
-
-      return result;
-    }
-
-    function enterHome(user) {
-      currentUser = user;
-
-      document.getElementById("displayUsername").textContent =
-        "@" + user.username;
-
-      document.getElementById("displayId").textContent =
-        user.nownex_id;
-
-      document.getElementById("bottomMenu").classList.add("visible");
-      showScreen("home");
-    }
-
-    document.getElementById("startButton").addEventListener("click", async () => {
-      if (!tg || !tg.initData) {
-        alert("Please open NOWNEX from Telegram.");
-        return;
-      }
-
-      const button = document.getElementById("startButton");
-      button.disabled = true;
-      button.textContent = "LOADING...";
-
-      try {
-        const result = await callRegistration("");
-
-        if (result.registered) {
-          enterHome(result);
-        } else {
-          showScreen("register");
-        }
-      } catch (error) {
-        alert(error.message);
-        button.disabled = false;
-        button.textContent = "ENTER";
-      }
-    });
-
-    document.getElementById("registerButton").addEventListener("click", async () => {
-      const usernameInput = document.getElementById("username");
-      const message = document.getElementById("registerMessage");
-      const button = document.getElementById("registerButton");
-
-      const username = usernameInput.value.trim();
-
-      if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
-        message.textContent = "Use 3–20 letters, numbers or underscores.";
-        return;
-      }
-
-      button.disabled = true;
-      button.textContent = "PLEASE WAIT...";
-      message.textContent = "";
-
-      try {
-        const result = await callRegistration(username);
-
-        if (result.registered) {
-          enterHome(result);
-        } else {
-          message.textContent = "Registration could not be completed.";
-        }
-      } catch (error) {
-        message.textContent = error.message;
-      } finally {
-        button.disabled = false;
-        button.textContent = "REGISTER";
-      }
-    });
-
-    const pageContent = {
-      home: ["HOME", "Welcome to your NOWNEX account."],
-      packages: ["PACKAGES", "Packages will be available here."],
-      balance: ["BALANCE", "Your balance will appear here."],
-      statistics: ["STATISTICS", "Your statistics will appear here."],
-      profile: ["PROFILE", "Your profile information will appear here."]
-    };
-
-    document.querySelectorAll(".menu-button").forEach(button => {
-      button.addEventListener("click", () => {
-        const page = button.dataset.page;
-
-        document.querySelectorAll(".menu-button").forEach(item => {
-          item.classList.remove("active");
-        });
-
-        button.classList.add("active");
-
-        const content = pageContent[page];
-
-        document.getElementById("homeContent").innerHTML =
-          "<h2>" + content[0] + "</h2><p>" + content[1] + "</p>";
-      });
-    });
-  </script>
-
+startApp();
+</script>
 </body>
 </html>
