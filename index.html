@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NOWNEX</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       background: #080b12;
@@ -14,7 +16,9 @@
       font-family: Arial, sans-serif;
       min-height: 100vh;
     }
+
     button, input { font: inherit; }
+
     .screen {
       min-height: 100vh;
       display: flex;
@@ -23,19 +27,27 @@
       justify-content: center;
       padding: 24px;
     }
-    #splash { padding: 0; background: #000; }
+
+    #splash {
+      padding: 0;
+      background: #000;
+    }
+
     #splash video {
       width: 100%;
       height: 100vh;
       object-fit: cover;
     }
+
     .hidden { display: none !important; }
+
     .logo {
       font-size: 34px;
       font-weight: 900;
       letter-spacing: 5px;
       margin-bottom: 30px;
     }
+
     .panel {
       width: 100%;
       max-width: 420px;
@@ -44,7 +56,9 @@
       border-radius: 20px;
       padding: 25px;
     }
+
     h2 { margin-top: 0; }
+
     input {
       width: 100%;
       padding: 15px;
@@ -55,6 +69,7 @@
       margin: 12px 0;
       outline: none;
     }
+
     .main-btn {
       width: 100%;
       padding: 15px;
@@ -65,24 +80,28 @@
       font-weight: bold;
       cursor: pointer;
     }
+
     .message {
       color: #ff8585;
       font-size: 14px;
       margin-top: 12px;
       line-height: 1.5;
     }
+
     #app {
       min-height: 100vh;
       padding: 35px 18px 110px;
       max-width: 700px;
       margin: auto;
     }
+
     .top-logo {
       font-size: 25px;
       font-weight: 900;
       letter-spacing: 4px;
       margin-bottom: 35px;
     }
+
     .section {
       background: #111827;
       border: 1px solid #263247;
@@ -90,18 +109,23 @@
       padding: 22px;
       min-height: 180px;
     }
+
     .row {
       padding: 13px 0;
       border-bottom: 1px solid #293449;
       overflow-wrap: anywhere;
     }
+
     .row:last-child { border-bottom: 0; }
+
     .label {
       color: #8fa0b8;
       font-size: 12px;
       margin-bottom: 6px;
     }
+
     .value { font-size: 16px; }
+
     .menu {
       position: fixed;
       bottom: 18px;
@@ -119,6 +143,7 @@
       border: 1px solid #34445d;
       z-index: 10;
     }
+
     .menu button {
       flex: 1;
       min-width: 0;
@@ -131,10 +156,12 @@
       font-weight: bold;
       cursor: pointer;
     }
+
     .menu button.active {
       background: white;
       color: #080b12;
     }
+
     .small-note {
       color: #8fa0b8;
       font-size: 13px;
@@ -142,6 +169,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <div id="splash" class="screen">
@@ -152,22 +180,32 @@
 
   <div id="register" class="screen hidden">
     <div class="logo">NOWNEX</div>
+
     <div class="panel">
       <h2>CREATE ACCOUNT</h2>
-      <p class="small-note">Alege username-ul tău NOWNEX.</p>
+      <p class="small-note">Choose your NOWNEX username.</p>
+
       <form id="registerForm">
-        <input id="usernameInput" type="text"
-          placeholder="Username" minlength="3" maxlength="20"
-          autocomplete="username" required>
+        <input
+          id="usernameInput"
+          type="text"
+          placeholder="Username"
+          minlength="3"
+          maxlength="20"
+          autocomplete="username"
+          required
+        >
+
         <button class="main-btn" type="submit">REGISTER</button>
       </form>
+
       <div id="registerMessage" class="message"></div>
     </div>
   </div>
 
   <div id="loading" class="screen hidden">
     <div class="logo">NOWNEX</div>
-    <p id="loadingMessage">Se încarcă...</p>
+    <p id="loadingMessage">Loading...</p>
   </div>
 
   <main id="app" class="hidden">
@@ -183,199 +221,219 @@
     <button data-page="profile">PROFILE</button>
   </nav>
 
-<script>
-const SUPABASE_URL = "https://gmgcyyhhdtqhtpfqbydg.supabase.co";
-const FUNCTION_URL = SUPABASE_URL + "/functions/v1/rapid-function";
-const PUBLISHABLE_KEY = "sb_publishable_CmYdFutjywR_FOG51tWr5Q_VMcI5Huj";
+  <script>
+    const SUPABASE_URL = "https://gmgcyyhhdtqhtpfqbydg.supabase.co";
+    const FUNCTION_URL = SUPABASE_URL + "/functions/v1/rapid-function";
+    const PUBLISHABLE_KEY = "sb_publishable_CmYdFutjywR_FOG51tWr5Q_VMcI5Huj";
 
-const tg = window.Telegram?.WebApp;
-let profile = null;
-let currentPage = "home";
-let requestBusy = false;
+    const tg = window.Telegram?.WebApp;
 
-if (tg) {
-  tg.ready();
-  tg.expand();
-}
+    let profile = null;
+    let requestBusy = false;
 
-const $ = id => document.getElementById(id);
-
-function show(id) {
-  ["splash", "register", "loading", "app"].forEach(name => {
-    $(name).classList.toggle("hidden", name !== id);
-  });
-  $("menu").classList.toggle("hidden", id !== "app");
-}
-
-function showMessage(id, text) {
-  $(id).textContent = text;
-}
-
-async function callFunction(username) {
-  if (!tg?.initData) {
-    throw new Error("Deschide aplicația prin Telegram pentru a continua.");
-  }
-
-  const body = { initData: tg.initData };
-  if (username) body.username = username;
-
-  const response = await fetch(FUNCTION_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "apikey": PUBLISHABLE_KEY,
-      "Authorization": "Bearer " + PUBLISHABLE_KEY
-    },
-    body: JSON.stringify(body)
-  });
-
-  const result = await response.json().catch(() => ({}));
-
-  if (!response.ok || result.error) {
-    throw new Error(result.error || result.message || "A apărut o eroare.");
-  }
-
-  return result;
-}
-
-function enterApp(data) {
-  profile = data;
-  show("app");
-  openPage("home");
-}
-
-function openPage(page) {
-  currentPage = page;
-
-  document.querySelectorAll(".menu button").forEach(button => {
-    button.classList.toggle("active", button.dataset.page === page);
-  });
-
-  const content = $("content");
-  content.replaceChildren();
-
-  const section = document.createElement("section");
-  section.className = "section";
-
-  const title = document.createElement("h2");
-  const description = document.createElement("p");
-  description.className = "small-note";
-
-  if (page === "home") {
-    title.textContent = "HOME";
-    description.textContent = "Welcome to NOWNEX!";
-    section.append(title, description);
-  }
-
-  if (page === "packages") {
-    title.textContent = "PACKAGES";
-    description.textContent = "Pachetele vor fi disponibile aici.";
-    section.append(title, description);
-  }
-
-  if (page === "balance") {
-    title.textContent = "BALANCE";
-    description.textContent = "Informațiile despre balanță vor apărea aici.";
-    section.append(title, description);
-  }
-
-  if (page === "statistics") {
-    title.textContent = "STATISTICS";
-    description.textContent = "Statisticile vor apărea aici.";
-    section.append(title, description);
-  }
-
-  if (page === "profile") {
-    title.textContent = "PROFILE";
-    section.append(title);
-
-    addProfileRow(section, "NOWNEX ID", profile?.nownex_id);
-    addProfileRow(section, "USERNAME", profile?.username);
-
-    const date = profile?.created_at
-      ? new Date(profile.created_at).toLocaleDateString("ro-RO")
-      : "Indisponibil";
-
-    addProfileRow(section, "DATA ÎNREGISTRĂRII", date);
-    addProfileRow(section, "TELEGRAM ID", profile?.telegram_id);
-  }
-
-  content.append(section);
-}
-
-function addProfileRow(parent, label, value) {
-  const row = document.createElement("div");
-  row.className = "row";
-
-  const labelElement = document.createElement("div");
-  labelElement.className = "label";
-  labelElement.textContent = label;
-
-  const valueElement = document.createElement("div");
-  valueElement.className = "value";
-  valueElement.textContent = value == null ? "Indisponibil" : String(value);
-
-  row.append(labelElement, valueElement);
-  parent.append(row);
-}
-
-document.querySelectorAll(".menu button").forEach(button => {
-  button.addEventListener("click", () => openPage(button.dataset.page));
-});
-
-$("registerForm").addEventListener("submit", async event => {
-  event.preventDefault();
-  if (requestBusy) return;
-
-  const username = $("usernameInput").value.trim();
-
-  if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
-    showMessage("registerMessage", "Folosește 3–20 caractere: litere, cifre sau _.");
-    return;
-  }
-
-  requestBusy = true;
-  showMessage("registerMessage", "Se creează contul...");
-
-  try {
-    const data = await callFunction(username);
-
-    if (!data.registered) {
-      throw new Error("Înregistrarea nu a fost confirmată.");
+    if (tg) {
+      tg.ready();
+      tg.expand();
     }
 
-    enterApp(data);
-  } catch (error) {
-    showMessage("registerMessage", error.message);
-  } finally {
-    requestBusy = false;
-  }
-});
+    const $ = id => document.getElementById(id);
 
-async function startApp() {
-  show("splash");
+    function show(id) {
+      ["splash", "register", "loading", "app"].forEach(name => {
+        $(name).classList.toggle("hidden", name !== id);
+      });
 
-  const minimumSplash = new Promise(resolve => setTimeout(resolve, 3000));
-
-  try {
-    const [data] = await Promise.all([
-      callFunction(),
-      minimumSplash
-    ]);
-
-    if (data.registered) {
-      enterApp(data);
-    } else {
-      show("register");
+      $("menu").classList.toggle("hidden", id !== "app");
     }
-  } catch (error) {
-    await minimumSplash;
-    show("loading");
-    $("loadingMessage").textContent = error.message;
-  }
-}
 
-startApp();
-</script>
+    function showMessage(id, text) {
+      $(id).textContent = text;
+    }
+
+    async function callFunction(username) {
+      if (!tg?.initData) {
+        throw new Error("Please open NOWNEX through Telegram.");
+      }
+
+      const body = { initData: tg.initData };
+
+      if (username) {
+        body.username = username;
+      }
+
+      const response = await fetch(FUNCTION_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": PUBLISHABLE_KEY,
+          "Authorization": "Bearer " + PUBLISHABLE_KEY
+        },
+        body: JSON.stringify(body)
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || result.error) {
+        throw new Error(
+          result.error || result.message || "Something went wrong."
+        );
+      }
+
+      return result;
+    }
+
+    function enterApp(data) {
+      profile = data;
+      show("app");
+      openPage("home");
+    }
+
+    function openPage(page) {
+      document.querySelectorAll(".menu button").forEach(button => {
+        button.classList.toggle(
+          "active",
+          button.dataset.page === page
+        );
+      });
+
+      const content = $("content");
+      content.replaceChildren();
+
+      const section = document.createElement("section");
+      section.className = "section";
+
+      const title = document.createElement("h2");
+      const description = document.createElement("p");
+      description.className = "small-note";
+
+      if (page === "home") {
+        title.textContent = "HOME";
+        description.textContent = "Welcome to NOWNEX!";
+        section.append(title, description);
+      }
+
+      if (page === "packages") {
+        title.textContent = "PACKAGES";
+        description.textContent = "Packages will be available here.";
+        section.append(title, description);
+      }
+
+      if (page === "balance") {
+        title.textContent = "BALANCE";
+        description.textContent = "Your balance information will appear here.";
+        section.append(title, description);
+      }
+
+      if (page === "statistics") {
+        title.textContent = "STATISTICS";
+        description.textContent = "Your statistics will appear here.";
+        section.append(title, description);
+      }
+
+      if (page === "profile") {
+        title.textContent = "PROFILE";
+        section.append(title);
+
+        addProfileRow(section, "NOWNEX ID", profile?.nownex_id);
+        addProfileRow(section, "USERNAME", profile?.username);
+
+        const date = profile?.created_at
+          ? new Date(profile.created_at).toLocaleDateString("en-US")
+          : "Unavailable";
+
+        addProfileRow(section, "REGISTRATION DATE", date);
+        addProfileRow(section, "TELEGRAM ID", profile?.telegram_id);
+      }
+
+      content.append(section);
+    }
+
+    function addProfileRow(parent, label, value) {
+      const row = document.createElement("div");
+      row.className = "row";
+
+      const labelElement = document.createElement("div");
+      labelElement.className = "label";
+      labelElement.textContent = label;
+
+      const valueElement = document.createElement("div");
+      valueElement.className = "value";
+      valueElement.textContent =
+        value == null ? "Unavailable" : String(value);
+
+      row.append(labelElement, valueElement);
+      parent.append(row);
+    }
+
+    document.querySelectorAll(".menu button").forEach(button => {
+      button.addEventListener("click", () => {
+        openPage(button.dataset.page);
+      });
+    });
+
+    $("registerForm").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      if (requestBusy) return;
+
+      const username = $("usernameInput").value.trim();
+
+      if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+        showMessage(
+          "registerMessage",
+          "Use 3–20 characters: letters, numbers, or underscores."
+        );
+        return;
+      }
+
+      requestBusy = true;
+      showMessage("registerMessage", "Creating your account...");
+
+      try {
+        const data = await callFunction(username);
+
+        if (!data.registered) {
+          throw new Error("Registration could not be confirmed.");
+        }
+
+        enterApp(data);
+
+      } catch (error) {
+        showMessage("registerMessage", error.message);
+
+      } finally {
+        requestBusy = false;
+      }
+    });
+
+    async function startApp() {
+      show("splash");
+
+      const minimumSplash = new Promise(resolve => {
+        setTimeout(resolve, 3000);
+      });
+
+      try {
+        const [data] = await Promise.all([
+          callFunction(),
+          minimumSplash
+        ]);
+
+        if (data.registered) {
+          enterApp(data);
+        } else {
+          show("register");
+        }
+
+      } catch (error) {
+        await minimumSplash;
+        show("loading");
+        $("loadingMessage").textContent = error.message;
+      }
+    }
+
+    startApp();
+  </script>
+
 </body>
 </html>
