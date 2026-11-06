@@ -2,190 +2,395 @@
 <html lang="ro">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>NOWNEX</title>
+
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       min-height: 100vh;
-      background: radial-gradient(circle at top, #102b50, #020817 70%);
+      background: #05070d;
       color: white;
       font-family: Arial, sans-serif;
-      text-align: center;
       overflow-x: hidden;
-      padding-bottom: 25px;
+    }
+
+    button, input { font: inherit; }
+
+    .screen {
+      display: none;
+      min-height: 100vh;
+      padding: 24px 20px 110px;
+    }
+
+    .screen.active { display: flex; }
+
+    #welcome {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      position: relative;
+      min-height: 100vh;
     }
 
     .logo {
-      padding: 35px 10px 20px;
-      font-size: 36px;
+      position: absolute;
+      z-index: 2;
+      top: 35px;
+      font-size: 30px;
       font-weight: 900;
-      letter-spacing: 5px;
-      text-shadow: 0 0 18px #168bff;
+      letter-spacing: 7px;
+      text-shadow: 0 0 20px #168cff;
     }
 
-    video {
-      pointer-events: none;
-      display: block;
-      width: 92%;
-      max-width: 600px;
-      margin: 10px auto 25px;
-      border-radius: 18px;
-      border: 1px solid #167dce;
-      box-shadow: 0 0 25px rgba(0,130,255,.35);
-      object-fit: cover;
-    }
-
-    .menu-circle {
-      width: 340px;
-      max-width: 96vw;
-      aspect-ratio: 1 / 1;
-      margin: 20px auto;
-      border: 2px solid #168bff;
-      border-radius: 50%;
-      background: radial-gradient(circle, #102b50, #06152b 70%);
-      box-shadow:
-        0 0 18px rgba(0,132,255,.6),
-        inset 0 0 25px rgba(0,132,255,.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 8px;
-    }
-
-    .menu-items {
+    .intro-video {
       width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-evenly;
-      gap: 3px;
+      height: 100vh;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
     }
 
-    .menu-item {
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, #05070d55, #05070d22, #05070d);
+    }
+
+    .welcome-button {
+      position: absolute;
+      z-index: 3;
+      bottom: 55px;
+      border: 1px solid #329cff;
+      background: #0878d9;
+      color: white;
+      padding: 15px 42px;
+      border-radius: 30px;
+      font-weight: bold;
+      box-shadow: 0 0 25px #0878d9aa;
+    }
+
+    .form-screen {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .form-screen h1 {
+      letter-spacing: 5px;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #9ba8bb;
+      margin-bottom: 30px;
+    }
+
+    .input {
+      width: 100%;
+      max-width: 360px;
+      padding: 16px;
+      margin: 8px 0;
+      color: white;
+      background: #111a29;
+      border: 1px solid #263b56;
+      border-radius: 14px;
+      outline: none;
+    }
+
+    .primary {
+      width: 100%;
+      max-width: 360px;
+      padding: 16px;
+      margin-top: 16px;
+      border: 0;
+      border-radius: 15px;
+      background: #0878d9;
+      color: white;
+      font-weight: bold;
+    }
+
+    .message {
+      color: #ff7777;
+      min-height: 22px;
+      margin-top: 14px;
+      max-width: 360px;
+    }
+
+    #home {
+      flex-direction: column;
+      align-items: center;
+      padding-top: 55px;
+    }
+
+    .home-logo {
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: 7px;
+      text-shadow: 0 0 20px #168cff;
+      margin-bottom: 45px;
+    }
+
+    .welcome-text {
+      color: #a9b8ca;
+      margin-bottom: 10px;
+    }
+
+    .user-id {
+      color: #4aa8ff;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    .content-area {
+      width: 100%;
+      max-width: 500px;
+      margin-top: 35px;
+      text-align: center;
+    }
+
+    .content-area h2 { letter-spacing: 2px; }
+
+    .content-area p { color: #a9b8ca; }
+
+    .bottom-menu {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 12px;
+      right: 12px;
+      bottom: 14px;
+      padding: 9px 7px;
+      background: rgba(12, 22, 38, .96);
+      border: 1px solid #24466b;
+      border-radius: 28px;
+      box-shadow: 0 0 24px #0878d944;
+      justify-content: space-around;
+      gap: 4px;
+      backdrop-filter: blur(15px);
+    }
+
+    .bottom-menu.visible { display: flex; }
+
+    .menu-button {
       flex: 1;
       min-width: 0;
-      padding: 9px 2px;
-      border: 1px solid rgba(65,166,255,.55);
-      border-radius: 18px;
-      background: rgba(13,48,83,.85);
-      color: white;
-      font-size: 10px;
+      padding: 12px 2px;
+      border: 0;
+      border-radius: 22px;
+      background: transparent;
+      color: #91a6bd;
+      font-size: 11px;
       font-weight: bold;
-      cursor: pointer;
-      overflow-wrap: anywhere;
-      transition: background .25s ease, box-shadow .25s ease,
-                  border-color .25s ease, transform .2s ease;
     }
 
-    .menu-item .icon {
-      display: flex;
-      width: 42px;
-      height: 42px;
-      margin: 0 auto 9px;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background: #0b315b;
-      border: 1px solid #269cff;
-      font-size: 20px;
-      transition: background .25s ease, box-shadow .25s ease;
+    .menu-button.active {
+      color: white;
+      background: #0878d9;
+      box-shadow: 0 0 15px #0878d988;
     }
 
-    .menu-item.active {
-      background: #38aaff;
-      color: #ffffff;
-      border: 1px solid #b8e5ff;
-      box-shadow:
-        0 0 12px #38aaff,
-        0 0 25px #168bff,
-        inset 0 0 12px rgba(255,255,255,.35);
-    }
-
-    .menu-item.active .icon {
-      background: #8bd3ff;
-      border-color: #ffffff;
-      box-shadow:
-        0 0 12px #ffffff,
-        0 0 20px #38aaff;
-    }
-
-    .menu-item:active {
-      transform: scale(.95);
-    }
-
-    @media (max-width: 360px) {
-      .menu-circle {
-        width: 96vw;
-        padding: 6px;
-      }
-
-      .menu-item {
-        font-size: 9px;
-        padding: 7px 1px;
-      }
-
-      .menu-item .icon {
-        width: 36px;
-        height: 36px;
-        font-size: 17px;
-      }
-    }
+    .hidden { display: none !important; }
   </style>
 </head>
 
 <body>
 
-  <div class="logo">NOWNEX</div>
+  <section id="welcome" class="screen active">
+    <div class="logo">NOWNEX</div>
+    <video class="intro-video"
+      autoplay muted loop playsinline
+      disablepictureinpicture
+      controlslist="nodownload noplaybackrate">
+      <source src="2026-11-05%2011%3A50%3A39.mov" type="video/quicktime">
+    </video>
+    <div class="video-overlay"></div>
+    <button class="welcome-button" id="startButton">ENTER</button>
+  </section>
 
-  <video autoplay muted loop playsinline preload="auto"
-         disablepictureinpicture
-         oncontextmenu="return false">
-    <source src="2026-11-05%2011%3A50%3A39.mov" type="video/quicktime">
-  </video>
+  <section id="register" class="screen form-screen">
+    <h1>NOWNEX</h1>
+    <p class="subtitle">Create your account</p>
 
-  <div class="menu-circle">
-    <div class="menu-items">
+    <input
+      id="username"
+      class="input"
+      type="text"
+      maxlength="20"
+      minlength="3"
+      placeholder="Choose your username"
+      autocomplete="username">
 
-      <button class="menu-item active" type="button">
-        <span class="icon">📦</span>
-        Packages
-      </button>
+    <button class="primary" id="registerButton">REGISTER</button>
+    <div class="message" id="registerMessage"></div>
+  </section>
 
-      <button class="menu-item" type="button">
-        <span class="icon">💳</span>
-        Balance
-      </button>
+  <section id="home" class="screen">
+    <div class="home-logo">NOWNEX</div>
+    <div class="welcome-text">Welcome to NOWNEX</div>
+    <div id="displayUsername"></div>
+    <div class="user-id" id="displayId"></div>
 
-      <button class="menu-item" type="button">
-        <span class="icon">📊</span>
-        Statistics
-      </button>
-
-      <button class="menu-item" type="button">
-        <span class="icon">👤</span>
-        Profile
-      </button>
-
+    <div class="content-area" id="homeContent">
+      <h2>HOME</h2>
+      <p>Welcome to your NOWNEX account.</p>
     </div>
-  </div>
+  </section>
+
+  <nav class="bottom-menu" id="bottomMenu">
+    <button class="menu-button active" data-page="home">HOME</button>
+    <button class="menu-button" data-page="packages">PACKAGES</button>
+    <button class="menu-button" data-page="balance">BALANCE</button>
+    <button class="menu-button" data-page="statistics">STATISTICS</button>
+    <button class="menu-button" data-page="profile">PROFILE</button>
+  </nav>
 
   <script>
-    const tg = window.Telegram.WebApp;
-    tg.ready();
-    tg.expand();
+    const SUPABASE_URL = "https://gmgcyyhhdtqhtpfqbydg.supabase.co";
+    const FUNCTION_URL = SUPABASE_URL + "/functions/v1/rapid-function";
+    const PUBLISHABLE_KEY = "sb_publishable_CmYdFutjywR_FOG51tWr5Q_VMcI5Huj";
 
-    const buttons = document.querySelectorAll(".menu-item");
+    const tg = window.Telegram?.WebApp;
 
-    buttons.forEach(button => {
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
+
+    let currentUser = null;
+
+    function showScreen(id) {
+      document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+      });
+
+      document.getElementById(id).classList.add("active");
+    }
+
+    async function callRegistration(username) {
+      if (!tg || !tg.initData) {
+        throw new Error("Open NOWNEX from its Telegram bot.");
+      }
+
+      const response = await fetch(FUNCTION_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": PUBLISHABLE_KEY
+        },
+        body: JSON.stringify({
+          initData: tg.initData,
+          ...(username ? { username } : {})
+        })
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Something went wrong.");
+      }
+
+      return result;
+    }
+
+    function enterHome(user) {
+      currentUser = user;
+
+      document.getElementById("displayUsername").textContent =
+        "@" + user.username;
+
+      document.getElementById("displayId").textContent =
+        user.nownex_id;
+
+      document.getElementById("bottomMenu").classList.add("visible");
+      showScreen("home");
+    }
+
+    document.getElementById("startButton").addEventListener("click", async () => {
+      if (!tg || !tg.initData) {
+        alert("Please open NOWNEX from Telegram.");
+        return;
+      }
+
+      const button = document.getElementById("startButton");
+      button.disabled = true;
+      button.textContent = "LOADING...";
+
+      try {
+        const result = await callRegistration("");
+
+        if (result.registered) {
+          enterHome(result);
+        } else {
+          showScreen("register");
+        }
+      } catch (error) {
+        alert(error.message);
+        button.disabled = false;
+        button.textContent = "ENTER";
+      }
+    });
+
+    document.getElementById("registerButton").addEventListener("click", async () => {
+      const usernameInput = document.getElementById("username");
+      const message = document.getElementById("registerMessage");
+      const button = document.getElementById("registerButton");
+
+      const username = usernameInput.value.trim();
+
+      if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+        message.textContent = "Use 3–20 letters, numbers or underscores.";
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "PLEASE WAIT...";
+      message.textContent = "";
+
+      try {
+        const result = await callRegistration(username);
+
+        if (result.registered) {
+          enterHome(result);
+        } else {
+          message.textContent = "Registration could not be completed.";
+        }
+      } catch (error) {
+        message.textContent = error.message;
+      } finally {
+        button.disabled = false;
+        button.textContent = "REGISTER";
+      }
+    });
+
+    const pageContent = {
+      home: ["HOME", "Welcome to your NOWNEX account."],
+      packages: ["PACKAGES", "Packages will be available here."],
+      balance: ["BALANCE", "Your balance will appear here."],
+      statistics: ["STATISTICS", "Your statistics will appear here."],
+      profile: ["PROFILE", "Your profile information will appear here."]
+    };
+
+    document.querySelectorAll(".menu-button").forEach(button => {
       button.addEventListener("click", () => {
-        buttons.forEach(item => item.classList.remove("active"));
+        const page = button.dataset.page;
+
+        document.querySelectorAll(".menu-button").forEach(item => {
+          item.classList.remove("active");
+        });
+
         button.classList.add("active");
+
+        const content = pageContent[page];
+
+        document.getElementById("homeContent").innerHTML =
+          "<h2>" + content[0] + "</h2><p>" + content[1] + "</p>";
       });
     });
   </script>
