@@ -1,108 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NOWNEX</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOWNEX</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-<style>
-* { box-sizing: border-box; }
+  <style>
+    * { box-sizing: border-box; }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  padding: 20px 12px 100px;
-  background: linear-gradient(135deg,#020817,#063b70,#020817);
-  color: white;
-  font-family: Arial, sans-serif;
-  text-align: center;
-}
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #102b50, #020817 70%);
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      overflow-x: hidden;
+      padding-bottom: 30px;
+    }
 
-.logo {
-  font-size: 38px;
-  font-weight: bold;
-  letter-spacing: 6px;
-  margin: 25px 0;
-}
+    .logo {
+      padding: 35px 10px 20px;
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: 5px;
+      text-shadow: 0 0 18px #168bff;
+    }
 
-video {
-  width: 100%;
-  max-width: 640px;
-  border-radius: 16px;
-  border: 2px solid #168cff;
-  background: #000;
-}
+    video {
+      display: block;
+      width: 92%;
+      max-width: 600px;
+      margin: 10px auto 25px;
+      border-radius: 18px;
+      border: 1px solid #167dce;
+      box-shadow: 0 0 25px rgba(0,130,255,.35);
+    }
 
-.bottom-menu {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  background: #04152c;
-  border-top: 1px solid #168cff;
-  padding: 12px 4px;
-}
+    .menu-circle {
+      width: min(94vw, 390px);
+      aspect-ratio: 1 / 1;
+      margin: 20px auto;
+      border: 2px solid #168bff;
+      border-radius: 50%;
+      background: radial-gradient(circle, #102b50, #06152b 70%);
+      box-shadow: 0 0 18px rgba(0,132,255,.6),
+                  inset 0 0 25px rgba(0,132,255,.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
 
-.bottom-menu button {
-  background: none;
-  border: none;
-  color: #9ccfff;
-  font-size: 12px;
-  padding: 8px 4px;
-  cursor: pointer;
-}
+    .menu-items {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      gap: 3px;
+    }
 
-.bottom-menu button span {
-  display: block;
-  font-size: 22px;
-  margin-bottom: 5px;
-}
+    .menu-item {
+      flex: 1;
+      min-width: 0;
+      padding: 9px 2px;
+      border: 1px solid rgba(65,166,255,.55);
+      border-radius: 18px;
+      background: rgba(13,48,83,.85);
+      color: white;
+      font-size: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      overflow-wrap: anywhere;
+    }
 
-.bottom-menu button.active {
-  color: white;
-}
-</style>
+    .menu-item .icon {
+      display: flex;
+      width: 42px;
+      height: 42px;
+      margin: 0 auto 9px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #0b315b;
+      border: 1px solid #269cff;
+      font-size: 20px;
+    }
+
+    .menu-item.active {
+      background: #075ca8;
+      border-color: #8acbff;
+      box-shadow: 0 0 15px #168bff;
+    }
+
+    .menu-item:active { transform: scale(.95); }
+
+    @media (max-width: 360px) {
+      .menu-circle {
+        width: 96vw;
+        padding: 8px;
+      }
+
+      .menu-item {
+        font-size: 9px;
+        padding: 7px 1px;
+      }
+
+      .menu-item .icon {
+        width: 36px;
+        height: 36px;
+        font-size: 17px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="logo">NOWNEX</div>
+  <div class="logo">NOWNEX</div>
 
-<video autoplay muted loop playsinline controls>
-  <source src="2026-11-05%2011%3A50%3A39.mov" type="video/quicktime">
-</video>
+  <video autoplay muted loop playsinline>
+    <source src="2026-11-05%2011%3A50%3A39.mov" type="video/quicktime">
+  </video>
 
-<div class="bottom-menu">
-  <button class="active" data-tab="Packages">
-    <span>📦</span>Packages
-  </button>
-  <button data-tab="Balance">
-    <span>💰</span>Balance
-  </button>
-  <button data-tab="Statistics">
-    <span>📊</span>Statistics
-  </button>
-  <button data-tab="Profile">
-    <span>👤</span>Profile
-  </button>
-</div>
+  <div class="menu-circle">
+    <div class="menu-items">
 
-<script>
-const tg = window.Telegram.WebApp;
-tg.ready();
-tg.expand();
+      <button class="menu-item active" type="button">
+        <span class="icon">📦</span>
+        Packages
+      </button>
 
-document.querySelectorAll(".bottom-menu button").forEach(button => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".bottom-menu button")
-      .forEach(item => item.classList.remove("active"));
-    button.classList.add("active");
-  });
-});
-</script>
+      <button class="menu-item" type="button">
+        <span class="icon">💳</span>
+        Balance
+      </button>
+
+      <button class="menu-item" type="button">
+        <span class="icon">📊</span>
+        Statistics
+      </button>
+
+      <button class="menu-item" type="button">
+        <span class="icon">👤</span>
+        Profile
+      </button>
+
+    </div>
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+
+    const buttons = document.querySelectorAll(".menu-item");
+
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        buttons.forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+      });
+    });
+  </script>
 
 </body>
 </html>
