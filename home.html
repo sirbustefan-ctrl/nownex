@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NOWNEX</title>
 
 <style>
@@ -21,40 +21,18 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background:
-    radial-gradient(ellipse at 50% 12%, rgba(255,235,170,.38), transparent 38%),
-    radial-gradient(ellipse at 50% 75%, rgba(30,125,255,.32), transparent 45%),
+    radial-gradient(ellipse at 50% 5%, rgba(120,78,15,.25), transparent 45%),
+    radial-gradient(ellipse at 50% 85%, rgba(15,55,105,.35), transparent 50%),
     linear-gradient(
       180deg,
-      #8b5b08 0%,
-      #e5b94e 15%,
-      rgba(255,245,210,.78) 39%,
-      rgba(205,232,255,.68) 53%,
-      #174e91 76%,
-      #071b42 100%
+      #171006 0%,
+      #46300d 20%,
+      #252018 39%,
+      #172333 55%,
+      #0b2342 76%,
+      #050d20 100%
     );
   background-attachment: fixed;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  opacity: .65;
-  background-image:
-    radial-gradient(2px 2px at 10% 18%, white 50%, transparent 100%),
-    radial-gradient(2px 2px at 82% 14%, white 50%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 28% 48%, white 50%, transparent 100%),
-    radial-gradient(2px 2px at 75% 62%, white 50%, transparent 100%),
-    radial-gradient(1.5px 1.5px at 18% 83%, white 50%, transparent 100%),
-    radial-gradient(2px 2px at 90% 88%, white 50%, transparent 100%);
-  background-size: 260px 260px;
-  animation: stars 8s ease-in-out infinite alternate;
-}
-
-@keyframes stars {
-  from { opacity: .25; }
-  to { opacity: .9; }
 }
 
 .glass {
@@ -63,17 +41,17 @@ body::before {
   pointer-events: none;
   background: linear-gradient(
     135deg,
-    rgba(255,255,255,.30),
-    rgba(255,255,255,.04) 45%,
-    rgba(255,255,255,.20)
+    rgba(255,255,255,.12),
+    rgba(255,255,255,.015) 45%,
+    rgba(160,190,220,.10)
   );
-  border-top: 1px solid rgba(255,255,255,.45);
-  border-bottom: 1px solid rgba(255,255,255,.28);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
+  border-top: 1px solid rgba(255,255,255,.16);
+  border-bottom: 1px solid rgba(255,255,255,.12);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   box-shadow:
-    0 0 45px rgba(255,255,255,.16),
-    inset 0 0 35px rgba(255,255,255,.13);
+    0 0 35px rgba(160,180,210,.07),
+    inset 0 0 35px rgba(255,255,255,.04);
 }
 
 main {
@@ -93,27 +71,27 @@ main {
   line-height: 1;
   background: linear-gradient(
     180deg,
-    #fff9d9 0%,
-    #f9d56b 25%,
-    #a66a0a 53%,
-    #fff0a9 72%,
-    #9a6108 100%
+    #fff1bc 0%,
+    #d5a747 25%,
+    #80520e 53%,
+    #e6c16d 72%,
+    #6d450d 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   filter:
-    drop-shadow(0 3px 1px rgba(65,35,0,.55))
-    drop-shadow(0 0 14px rgba(255,225,130,.7));
+    drop-shadow(0 3px 2px rgba(0,0,0,.7))
+    drop-shadow(0 0 10px rgba(190,145,55,.3));
 }
 
 .logo span {
   background: linear-gradient(
     180deg,
-    #ffffff,
-    #9edbff 30%,
-    #267ac4 65%,
-    #e2f6ff
+    #e5f3ff,
+    #8bb7dc 30%,
+    #28577f 65%,
+    #c3d9eb
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -138,80 +116,91 @@ main {
   object-fit: contain;
   position: relative;
   z-index: 2;
-  filter: drop-shadow(0 16px 25px rgba(0,0,0,.28));
+  filter: drop-shadow(0 16px 25px rgba(0,0,0,.4));
 }
 
-.coin {
+/* TETHER / USDT */
+
+.usdt-mark {
   position: absolute;
-  z-index: 4;
-  width: clamp(65px, 17vw, 94px);
-  aspect-ratio: 1;
-  border-radius: 50%;
+  z-index: 5;
+  left: 17%;
+  top: 42%;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-weight: 900;
-  font-size: clamp(12px, 3vw, 17px);
-  letter-spacing: 1px;
-  color: #fff9d8;
+  gap: 3px;
+  animation: logoSpin 4s linear infinite;
   transform-style: preserve-3d;
-  animation: coinSpin 3s linear infinite;
+  filter: drop-shadow(0 0 9px rgba(0,150,110,.35));
 }
 
-.coin::before {
-  content: "";
+.tether-icon {
+  width: 42px;
+  height: 42px;
+}
+
+.usdt-name {
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #d5ad59;
+  text-shadow: 0 2px 3px #000;
+}
+
+.usdt-code {
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #e5edf7;
+  text-shadow: 0 2px 5px #071426;
+}
+
+/* NOWNEX inscription */
+
+.nownex-mark {
   position: absolute;
-  inset: 0;
-  border-radius: 50%;
+  z-index: 5;
+  right: 13%;
+  top: 43%;
+  font-size: clamp(17px, 4.5vw, 25px);
+  font-weight: 1000;
+  letter-spacing: 2px;
+  white-space: nowrap;
   background: linear-gradient(
-    135deg,
-    #fff8c7,
-    #d6a52d 28%,
-    #80500a 55%,
-    #ffdf75 78%,
-    #fff4b9
+    180deg,
+    #fff1bc 0%,
+    #d8ad54 28%,
+    #8c5b16 55%,
+    #e8c779 78%,
+    #78500f 100%
   );
-  border: 3px solid #ffe8a0;
-  box-shadow:
-    0 0 12px rgba(255,222,125,.9),
-    0 0 30px rgba(255,208,75,.55),
-    inset 0 0 12px rgba(255,255,255,.7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter:
+    drop-shadow(0 2px 2px #000)
+    drop-shadow(0 0 9px rgba(195,150,65,.35));
+  animation: glow 3s ease-in-out infinite alternate;
 }
 
-.coin span {
-  position: relative;
-  z-index: 1;
-  text-shadow: 0 2px 4px #694300;
-  backface-visibility: hidden;
-}
-
-.coin.usdt {
-  left: 18%;
-  top: 42%;
-}
-
-.coin.nownex {
-  right: 17%;
-  top: 42%;
-}
-
-.coin.nownex::before {
-  background: linear-gradient(
-    135deg,
-    #f5e6a5,
-    #b98722 30%,
-    #65420c 55%,
-    #f5d66e 80%,
-    #fff3bf
-  );
-}
-
-@keyframes coinSpin {
-  0% {
+@keyframes logoSpin {
+  from {
     transform: perspective(500px) rotateY(0deg);
   }
-  100% {
+  to {
     transform: perspective(500px) rotateY(360deg);
+  }
+}
+
+@keyframes glow {
+  from {
+    filter: drop-shadow(0 2px 2px #000)
+    drop-shadow(0 0 5px rgba(195,150,65,.2));
+  }
+  to {
+    filter: drop-shadow(0 2px 2px #000)
+    drop-shadow(0 0 12px rgba(220,180,95,.55));
   }
 }
 
@@ -221,21 +210,21 @@ main {
   font-size: 15px;
   font-weight: bold;
   letter-spacing: 2px;
-  color: #fff8df;
-  text-shadow: 0 2px 8px #071b42;
+  color: #c9d7e8;
+  text-shadow: 0 2px 8px #000;
 }
 
-@media (max-width: 380px) {
+@media(max-width:380px) {
   .scene {
     min-height: 390px;
   }
 
-  .coin.usdt {
-    left: 12%;
+  .usdt-mark {
+    left: 10%;
   }
 
-  .coin.nownex {
-    right: 12%;
+  .nownex-mark {
+    right: 8%;
   }
 }
 </style>
@@ -251,25 +240,22 @@ main {
 
   <section class="scene">
 
-    <img
-      class="couple"
-      src="couple.PNG"
-      alt="NOWNEX couple"
-    >
+    <img class="couple" src="couple.PNG" alt="NOWNEX couple">
 
-    <div class="coin usdt">
-      <span>₮ USDT</span>
+    <div class="usdt-mark">
+      <svg class="tether-icon" viewBox="0 0 100 100" role="img" aria-label="Tether logo">
+        <circle cx="50" cy="50" r="46" fill="#26A17B"/>
+        <path fill="#fff" d="M25 25h50v13H56v8c13 1 22 4 22 10 0 7-12 11-28 11S22 63 22 56c0-6 9-9 22-10v-8H25V25zm25 39c13 0 21-2 21-5s-8-5-21-5-21 2-21 5 8 5 21 5zm-5-18v14h10V46H45z"/>
+      </svg>
+      <div class="usdt-name">TETHER</div>
+      <div class="usdt-code">USDT</div>
     </div>
 
-    <div class="coin nownex">
-      <span>NOWNEX</span>
-    </div>
+    <div class="nownex-mark">NOWNEX</div>
 
   </section>
 
-  <div class="bottom-message">
-    © 2026
-  </div>
+  <div class="bottom-message">© 2026</div>
 
 </main>
 
