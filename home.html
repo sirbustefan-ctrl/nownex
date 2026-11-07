@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#102b55">
-<title>NOWNEX HOME</title>
+<title>NOWNEX — Home</title>
 
 <style>
 * {
@@ -14,222 +13,267 @@
 html, body {
   margin: 0;
   min-height: 100%;
-}
-
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: #102b55;
+  font-family: Arial, sans-serif;
   color: white;
 }
 
-.home {
+body {
   min-height: 100vh;
-  overflow: hidden;
-  position: relative;
-  padding: 20px 14px 45px;
-  background: linear-gradient(
-    to bottom,
-    #d6a62e 0%,
-    #f3d77c 30%,
-    #173b70 30%,
-    #071a38 100%
-  );
+  overflow-x: hidden;
+  background:
+    radial-gradient(ellipse at 50% 12%, rgba(255,235,170,.38), transparent 38%),
+    radial-gradient(ellipse at 50% 75%, rgba(30,125,255,.32), transparent 45%),
+    linear-gradient(
+      180deg,
+      #8b5b08 0%,
+      #e5b94e 15%,
+      rgba(255,245,210,.78) 39%,
+      rgba(205,232,255,.68) 53%,
+      #174e91 76%,
+      #071b42 100%
+    );
+  background-attachment: fixed;
 }
 
-/* LOGO */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .65;
+  background-image:
+    radial-gradient(2px 2px at 10% 18%, white 50%, transparent 100%),
+    radial-gradient(2px 2px at 82% 14%, white 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 28% 48%, white 50%, transparent 100%),
+    radial-gradient(2px 2px at 75% 62%, white 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 18% 83%, white 50%, transparent 100%),
+    radial-gradient(2px 2px at 90% 88%, white 50%, transparent 100%);
+  background-size: 260px 260px;
+  animation: stars 8s ease-in-out infinite alternate;
+}
+
+@keyframes stars {
+  from { opacity: .25; }
+  to { opacity: .9; }
+}
+
+.glass {
+  position: fixed;
+  inset: 34% 0 30%;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,.30),
+    rgba(255,255,255,.04) 45%,
+    rgba(255,255,255,.20)
+  );
+  border-top: 1px solid rgba(255,255,255,.45);
+  border-bottom: 1px solid rgba(255,255,255,.28);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  box-shadow:
+    0 0 45px rgba(255,255,255,.16),
+    inset 0 0 35px rgba(255,255,255,.13);
+}
+
+main {
+  position: relative;
+  min-height: 100vh;
+  padding: 28px 14px 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
 
 .logo {
-  text-align: center;
-  font-size: clamp(38px, 10vw, 60px);
-  font-weight: 1000;
-  letter-spacing: 3px;
-  margin: 8px 0 4px;
-  text-shadow: 0 3px 12px #0005;
+  font-size: clamp(38px, 10vw, 62px);
+  font-weight: 900;
+  letter-spacing: 5px;
+  line-height: 1;
+  background: linear-gradient(
+    180deg,
+    #fff9d9 0%,
+    #f9d56b 25%,
+    #a66a0a 53%,
+    #fff0a9 72%,
+    #9a6108 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 3px 1px rgba(65,35,0,.55))
+          drop-shadow(0 0 14px rgba(255,225,130,.7));
 }
 
-.now {
-  color: #fff0a6;
-}
-
-.nex {
-  color: #173b70;
-  -webkit-text-stroke: 1px #ffe49a;
+.logo span {
+  background: linear-gradient(
+    180deg,
+    #ffffff,
+    #9edbff 30%,
+    #267ac4 65%,
+    #e2f6ff
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .subtitle {
-  text-align: center;
-  color: #fff4d0;
-  font-size: 10px;
-  letter-spacing: 5px;
-  margin-bottom: 35px;
+  margin-top: 12px;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: #fff8dc;
+  text-shadow: 0 2px 8px #624000;
 }
 
-/* PEOPLE */
-
 .scene {
-  width: 100%;
-  max-width: 540px;
-  margin: 0 auto;
   position: relative;
+  width: min(100%, 560px);
+  margin: 30px auto 0;
+  flex: 1;
+  min-height: 430px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .couple {
-  width: 100%;
-  position: relative;
-}
-
-.couple img {
   display: block;
   width: 100%;
-  height: auto;
+  max-height: 68vh;
   object-fit: contain;
-}
-
-/* COINS */
-
-.hand-coin {
-  position: absolute;
-  width: 75px;
-  height: 75px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  perspective: 600px;
-  z-index: 5;
-  pointer-events: none;
-}
-
-/* Positions can be adjusted after seeing the photo */
-
-.girl-coin {
-  left: 23%;
-  top: 42%;
-}
-
-.boy-coin {
-  right: 20%;
-  top: 42%;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 16px 25px rgba(0,0,0,.28));
 }
 
 .coin {
-  width: 68px;
-  height: 68px;
+  position: absolute;
+  z-index: 4;
+  width: clamp(65px, 17vw, 94px);
+  aspect-ratio: 1;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 1000;
-  animation: coinRotation 2.8s linear infinite;
+  font-weight: 900;
+  font-size: clamp(12px, 3vw, 17px);
+  letter-spacing: 1px;
+  color: #fff9d8;
   transform-style: preserve-3d;
-  backface-visibility: visible;
-  box-shadow: 0 0 22px #f8d66b99;
+  animation: coinSpin 3s linear infinite;
 }
 
-.usdt {
-  color: white;
-  background: linear-gradient(145deg, #39c6a2, #087e68);
-  border: 4px solid #b9ffe9;
-  font-size: 14px;
-  text-shadow: 0 2px 5px #064e3b;
+.coin::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    #fff8c7,
+    #d6a52d 28%,
+    #80500a 55%,
+    #ffdf75 78%,
+    #fff4b9
+  );
+  border: 3px solid #ffe8a0;
+  box-shadow:
+    0 0 12px rgba(255,222,125,.9),
+    0 0 30px rgba(255,208,75,.55),
+    inset 0 0 12px rgba(255,255,255,.7);
 }
 
-.usdt-symbol {
-  font-size: 25px;
-  margin-right: 3px;
+.coin span {
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 4px #694300;
+  backface-visibility: hidden;
 }
 
-.nownex-coin {
-  color: #fff0a5;
-  background: linear-gradient(145deg, #f6d779, #936515);
-  border: 4px solid #fff0ad;
-  font-size: 11px;
-  text-shadow: 0 2px 5px #68440b;
+.coin.usdt {
+  left: 18%;
+  top: 42%;
 }
 
-@keyframes coinRotation {
-  from {
-    transform: rotateY(0deg);
+.coin.nownex {
+  right: 17%;
+  top: 42%;
+  background: linear-gradient(135deg, #dff7ff, #398bd0, #092e66);
+}
+
+.coin.nownex::before {
+  background: linear-gradient(
+    135deg,
+    #f5e6a5,
+    #b98722 30%,
+    #65420c 55%,
+    #f5d66e 80%,
+    #fff3bf
+  );
+}
+
+@keyframes coinSpin {
+  0% {
+    transform: perspective(500px) rotateY(0deg);
   }
-  to {
-    transform: rotateY(360deg);
+  100% {
+    transform: perspective(500px) rotateY(360deg);
   }
 }
-
-/* BOTTOM TEXT */
 
 .bottom-message {
-  text-align: center;
-  margin-top: 35px;
-  color: #f8e5ae;
-  font-weight: bold;
-  letter-spacing: 3px;
+  margin-top: 12px;
+  padding: 14px 20px;
   font-size: 13px;
-  text-shadow: 0 2px 8px #0008;
+  letter-spacing: 2px;
+  color: #fff8df;
+  text-shadow: 0 2px 8px #071b42;
 }
 
-/* MOBILE */
-
 @media (max-width: 380px) {
-  .hand-coin {
-    width: 60px;
-    height: 60px;
+  .scene {
+    min-height: 390px;
   }
 
-  .coin {
-    width: 55px;
-    height: 55px;
-    font-size: 11px;
+  .coin.usdt {
+    left: 12%;
   }
 
-  .usdt-symbol {
-    font-size: 20px;
+  .coin.nownex {
+    right: 12%;
   }
 }
 </style>
 </head>
 
 <body>
+<div class="glass"></div>
 
-<main class="home">
-
-  <div class="logo">
-    <span class="now">NOW</span><span class="nex">NEX</span>
-  </div>
-
-  <div class="subtitle">
-    YOUR FUTURE STARTS HERE
-  </div>
+<main>
+  <div class="logo">NOW<span>NEX</span></div>
+  <div class="subtitle">A NEW DIGITAL UNIVERSE</div>
 
   <section class="scene">
+    <img
+      class="couple"
+      src="couple.png"
+      alt="NOWNEX couple"
+    >
 
-    <div class="couple">
-
-      <!-- Add your full-body couple photo as couple.png -->
-      <img src="couple.png" alt="Elegant NOWNEX couple">
-
-      <!-- USDT in the girl's hand -->
-      <div class="hand-coin girl-coin">
-        <div class="coin usdt">
-          <span class="usdt-symbol">₮</span>USDT
-        </div>
-      </div>
-
-      <!-- NOWNEX in the boy's hand -->
-      <div class="hand-coin boy-coin">
-        <div class="coin nownex-coin">
-          NOWNEX
-        </div>
-      </div>
-
+    <div class="coin usdt">
+      <span>₮ USDT</span>
     </div>
 
+    <div class="coin nownex">
+      <span>NOWNEX</span>
+    </div>
   </section>
 
   <div class="bottom-message">
-    DREAM BIG · BUILD YOUR FUTURE
+    YOUR FUTURE. YOUR UNIVERSE.
   </div>
-
 </main>
-
 </body>
 </html>
