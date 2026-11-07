@@ -10,54 +10,37 @@
   box-sizing: border-box;
 }
 
-html {
+html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   min-height: 100%;
-  background: #050d20;
+  font-family: Arial, sans-serif;
+  color: white;
+}
+
+html {
+  background: #102b49;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
-  font-family: Arial, sans-serif;
-  color: white;
   overflow-x: hidden;
 
+  /* ONE CONTINUOUS BACKGROUND */
   background: linear-gradient(
     180deg,
     #98701f 0%,
-    #765114 20%,
-    #49330f 39%,
-    #25202a 53%,
-    #102d50 76%,
-    #050d20 100%
+    #80601f 18%,
+    #66501f 36%,
+    #48402b 54%,
+    #293b49 73%,
+    #102b49 88%,
+    #08172c 100%
   );
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  background-attachment: fixed;
-}
-
-.glass {
-  position: fixed;
-  inset: 34% 0 30%;
-  pointer-events: none;
-
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,.12),
-    rgba(255,255,255,.015) 45%,
-    rgba(160,190,220,.10)
-  );
-
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-
-  box-shadow: inset 0 0 35px rgba(255,255,255,.04);
 }
 
 main {
@@ -74,6 +57,8 @@ main {
   text-align: center;
 }
 
+/* FULL GOLD NOWNEX LOGO */
+
 .logo {
   font-size: clamp(42px, 11vw, 68px);
   font-weight: 900;
@@ -82,32 +67,23 @@ main {
 
   background: linear-gradient(
     180deg,
-    #fff1bc,
-    #d5a747 35%,
-    #80520e 65%,
-    #e6c16d
+    #fff5cf 0%,
+    #f1d17b 20%,
+    #d5a747 45%,
+    #986719 70%,
+    #f2d58c 100%
   );
 
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 
-  filter: drop-shadow(0 3px 3px rgba(0,0,0,.7));
+  filter:
+    drop-shadow(0 3px 2px rgba(0,0,0,.7))
+    drop-shadow(0 0 8px rgba(218,174,78,.25));
 }
 
-.logo span {
-  background: linear-gradient(
-    180deg,
-    #e5f3ff,
-    #8bb7dc 35%,
-    #28577f 70%,
-    #c3d9eb
-  );
-
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
+/* COUPLE */
 
 .scene {
   position: relative;
@@ -132,7 +108,7 @@ main {
   filter: drop-shadow(0 16px 25px rgba(0,0,0,.4));
 }
 
-/* USDT */
+/* TETHER / USDT */
 
 .usdt-mark {
   position: absolute;
@@ -172,7 +148,7 @@ main {
   text-shadow: 0 2px 5px #071426;
 }
 
-/* NOWNEX */
+/* NOWNEX GOLD MARK */
 
 .nownex-mark {
   position: absolute;
@@ -187,11 +163,11 @@ main {
 
   background: linear-gradient(
     180deg,
-    #fff1bc,
-    #d8ad54 28%,
-    #8c5b16 55%,
-    #e8c779 78%,
-    #78500f
+    #fff5cf 0%,
+    #f1d17b 20%,
+    #d5a747 45%,
+    #986719 70%,
+    #f2d58c 100%
   );
 
   -webkit-background-clip: text;
@@ -205,6 +181,8 @@ main {
     drop-shadow(0 2px 2px #000)
     drop-shadow(0 0 9px rgba(195,150,65,.35));
 }
+
+/* CONTINUOUS ROTATION */
 
 @keyframes logoSpin {
   from {
@@ -245,11 +223,9 @@ main {
 
 <body>
 
-<div class="glass"></div>
-
 <main>
 
-  <div class="logo">NOW<span>NEX</span></div>
+  <div class="logo">NOWNEX</div>
 
   <section class="scene">
 
