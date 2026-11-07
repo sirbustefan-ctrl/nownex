@@ -4,8 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>NOWNEX</title>
+
 <style>
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 html, body {
   margin: 0;
@@ -16,22 +19,30 @@ html, body {
   color: white;
 }
 
-html { background: #102b49; }
+html {
+  background: #102b49;
+}
 
 body {
   min-height: 100vh;
   min-height: 100dvh;
   overflow-x: hidden;
+
+  /* Soft black → gold → blue background */
   background:
-    linear-gradient(180deg,
-      #98701f 0%,
-      #80601f 12%,
-      #51401f 22%,
-      #29251f 31%,
-      #20252b 42%,
-      #293b49 62%,
-      #102b49 84%,
-      #08172c 100%);
+    linear-gradient(
+      180deg,
+      #25282c 0%,
+      #302d29 12%,
+      #51402b 27%,
+      #80601f 43%,
+      #98701f 52%,
+      #66501f 64%,
+      #293b49 80%,
+      #102b49 92%,
+      #08172c 100%
+    );
+
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
@@ -43,6 +54,7 @@ main {
   min-height: 100dvh;
   padding: 35px 14px 30px;
   padding-bottom: max(30px, env(safe-area-inset-bottom));
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,17 +66,23 @@ main {
   font-weight: 900;
   letter-spacing: 5px;
   line-height: 1;
-  background: linear-gradient(180deg,
+
+  background: linear-gradient(
+    180deg,
     #fff5cf 0%,
     #f1d17b 20%,
     #d5a747 45%,
     #986719 70%,
-    #f2d58c 100%);
+    #f2d58c 100%
+  );
+
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 3px 2px rgba(0,0,0,.7))
-          drop-shadow(0 0 8px rgba(218,174,78,.25));
+
+  filter:
+    drop-shadow(0 3px 2px rgba(0,0,0,.7))
+    drop-shadow(0 0 8px rgba(218,174,78,.25));
 }
 
 .scene {
@@ -73,6 +91,7 @@ main {
   margin: 30px auto 0;
   flex: 1;
   min-height: 430px;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -85,6 +104,7 @@ main {
   object-fit: contain;
   position: relative;
   z-index: 2;
+
   filter: drop-shadow(0 16px 25px rgba(0,0,0,.4));
 }
 
@@ -93,12 +113,15 @@ main {
   z-index: 5;
   left: 17%;
   top: 42%;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3px;
+
   transform-style: preserve-3d;
   animation: logoSpin 4s linear infinite;
+
   filter: drop-shadow(0 0 9px rgba(0,150,110,.35));
 }
 
@@ -128,28 +151,41 @@ main {
   z-index: 5;
   right: 13%;
   top: 43%;
+
   font-size: clamp(17px, 4.5vw, 25px);
   font-weight: 1000;
   letter-spacing: 2px;
   white-space: nowrap;
-  background: linear-gradient(180deg,
+
+  background: linear-gradient(
+    180deg,
     #fff5cf 0%,
     #f1d17b 20%,
     #d5a747 45%,
     #986719 70%,
-    #f2d58c 100%);
+    #f2d58c 100%
+  );
+
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+
   transform-style: preserve-3d;
   animation: logoSpin 4s linear infinite;
-  filter: drop-shadow(0 2px 2px #000)
-          drop-shadow(0 0 9px rgba(195,150,65,.35));
+
+  filter:
+    drop-shadow(0 2px 2px #000)
+    drop-shadow(0 0 9px rgba(195,150,65,.35));
 }
 
 @keyframes logoSpin {
-  from { transform: perspective(500px) rotateY(0deg); }
-  to { transform: perspective(500px) rotateY(360deg); }
+  from {
+    transform: perspective(500px) rotateY(0deg);
+  }
+
+  to {
+    transform: perspective(500px) rotateY(360deg);
+  }
 }
 
 .bottom-message {
@@ -163,33 +199,52 @@ main {
 }
 
 @media(max-width:380px) {
-  .scene { min-height: 390px; }
-  .usdt-mark { left: 10%; }
-  .nownex-mark { right: 8%; }
+  .scene {
+    min-height: 390px;
+  }
+
+  .usdt-mark {
+    left: 10%;
+  }
+
+  .nownex-mark {
+    right: 8%;
+  }
 }
 </style>
 </head>
 
 <body>
 <main>
+
   <div class="logo">NOWNEX</div>
 
   <section class="scene">
-    <img class="couple" src="couple.PNG" alt="NOWNEX couple">
+
+    <img
+      class="couple"
+      src="couple.PNG"
+      alt="NOWNEX couple"
+    >
 
     <div class="usdt-mark">
+
       <svg class="tether-icon" viewBox="0 0 100 100" aria-label="Tether logo">
         <circle cx="50" cy="50" r="46" fill="#26A17B"/>
         <path fill="#fff" d="M25 25h50v13H56v8c13 1 22 4 22 10 0 7-12 11-28 11S22 63 22 56c0-6 9-9 22-10v-8H25V25zm25 39c13 0 21-2 21-5s-8-5-21-5-21 2-21 5 8 5 21 5zm-5-18v14h10V46H45z"/>
       </svg>
+
       <div class="usdt-name">TETHER</div>
       <div class="usdt-code">USDT</div>
+
     </div>
 
     <div class="nownex-mark">NOWNEX</div>
+
   </section>
 
   <div class="bottom-message">© 2026</div>
+
 </main>
 </body>
 </html>
