@@ -227,6 +227,32 @@
     #avatarInput {
       display: none;
     }
+
+    /* HOME PAGE CONNECTION */
+
+    #app.home-mode {
+      padding: 0 0 100px;
+      max-width: none;
+      width: 100%;
+    }
+
+    #app.home-mode .top-logo {
+      display: none;
+    }
+
+    #app.home-mode #content {
+      width: 100%;
+      margin: 0;
+    }
+
+    .home-frame {
+      display: block;
+      width: 100%;
+      height: calc(100vh - 90px);
+      min-height: 500px;
+      border: 0;
+      background: #080b12;
+    }
   </style>
 </head>
 
@@ -369,18 +395,24 @@
       const content = $("content");
       content.replaceChildren();
 
+      $("app").classList.toggle("home-mode", page === "home");
+
+      if (page === "home") {
+        const frame = document.createElement("iframe");
+        frame.className = "home-frame";
+        frame.src = "home.html";
+        frame.title = "NOWNEX Home";
+
+        content.append(frame);
+        return;
+      }
+
       const section = document.createElement("section");
       section.className = "section";
 
       const title = document.createElement("h2");
       const description = document.createElement("p");
       description.className = "small-note";
-
-      if (page === "home") {
-        title.textContent = "HOME";
-        description.textContent = "Welcome to NOWNEX!";
-        section.append(title, description);
-      }
 
       if (page === "packages") {
         title.textContent = "PACKAGES";
